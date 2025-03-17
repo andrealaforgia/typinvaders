@@ -1,5 +1,89 @@
-typinvaders
+# Compiled object files, libraries, and executables
 *.o
-*.dSYM
-**/.DS_Store
-**/.vscode/
+*.obj
+*.so
+*.a
+*.lib
+*.dll
+*.exe
+*.out
+
+# Debug and release directories
+/debug/
+/release/
+/bin/
+/build/
+/dist/
+/lib/
+/obj/
+
+# Dependency directories
+/deps/
+/vendor/
+
+# IDE and editor specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# CLion/CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+CMakeLists.txt.user
+
+# Visual Studio specific files
+*.vcxproj
+*.vcxproj.*
+*.sln
+*.ncb
+*.sdf
+*.opensdf
+*.VC.db
+*.vs/
+
+# Xcode specific files
+*.pbxproj
+*.xcworkspace/
+*.xcuserstate
+*.xcuserdata/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.swp
+*.swo
+*.bak
+*.tmp
+*.~*
+
+# Logs and temporary files
+*.log
+*.trace
+*.dmp
+*.pid
+*.lock
+
+# Generated documentation
+/docs/
+/doxygen/
+
+# Package management
+node_modules/
+*.pyc
+__pycache__/
+*.egg-info
+*.gem
+*.rbc
+
+# Custom user overrides
+.gitignore.local
+
+# executable
+typinvaders
