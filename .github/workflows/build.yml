@@ -1,0 +1,34 @@
+name: Build Asteroids
+
+on:
+  push:
+    branches: [main]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: make dev_install
+
+      - name: Run Linter
+        run: make lint
+
+  build:
+    runs-on: ubuntu-latest
+    needs: lint  # Ensures linting passes before building
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: make install 
+
+      - name: Show SDL Configuration
+        run: make show_sdl_config
+
+      - name: Compile Project
+        run: make
+        
