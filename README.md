@@ -10,32 +10,32 @@ make
 
 ## Show run options
 ```
-./asteroids --help
+./typinvaders --help
 ```
 
 ## Run the game in a maximised window (recommended the first time)
 ```
-./asteroids
+./typinvaders
 ```
 
 ## Run the game in full screen
 ```
-./asteroids --window-mode=1
+./typinvaders --window-mode=1
 ```
 
 The game will run by default on the main display. To run it as full screen on a secondary screen, use:
 ```
-./asteroids --window-mode=1 --display=1
+./typinvaders --window-mode=1 --display=1
 ```
 
 To discover the number of displays available, run: 
 ```
-./asteroids --graphics-info
+./typinvaders --graphics-info
 ``` 
 
 The game will run with sound enabled by default. If you want to disable sound at the start, use the `--no-sound` option:
 ```
-./asteroids --no-sound
+./typinvaders --no-sound
 ```
 
 ## Commands
