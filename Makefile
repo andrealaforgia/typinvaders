@@ -43,7 +43,7 @@ dev_install:
 	$(DEV_INSTALL_CMD)
 
 lint:
-	cpplint --filter=-build/include_subdir,-legal/copyright,-runtime/threadsafe_fn $(SRC) $(HEADERS)
+	cpplint --extensions=c,h --filter=-build/include_subdir,-legal/copyright,-runtime/threadsafe_fn $(SRC) $(HEADERS)
 
 clean:
 	rm -f $(OBJ) $(TARGET)
