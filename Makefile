@@ -3,18 +3,18 @@ CC = gcc
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Linux)
     PLATFORM = LINUX
-    INSTALL_CMD = sudo apt-get update && sudo apt-get install -y libsdl2-dev libsdl2-mixer-dev
+    INSTALL_CMD = sudo apt-get update && sudo apt-get install -y libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev
     DEV_INSTALL_CMD = sudo apt-get update && sudo apt-get install -y cpplint clang-format
 else ifeq ($(UNAME_S), Darwin)
     PLATFORM = OSX
-    INSTALL_CMD = brew install sdl2 sdl2_mixer
+    INSTALL_CMD = brew install sdl2 sdl2_mixer sdl2_image
     DEV_INSTALL_CMD = brew install cpplint clang-format
 else
     $(error Unsupported platform)
 endif
 
 SDL2_CFLAGS := $(shell sdl2-config --cflags)
-SDL2_LFLAGS := $(shell sdl2-config --libs) -lSDL2_mixer
+SDL2_LFLAGS := $(shell sdl2-config --libs) -lSDL2_mixer -lSDL2_image
 
 CFLAGS := -ggdb3 -Ofast --std=c99 -Wall -Wextra -pedantic-errors $(SDL2_CFLAGS) 
 LFLAGS := $(SDL2_LFLAGS) -lm
@@ -59,4 +59,3 @@ show_sdl_config:
 	@sdl2-config --libs || echo "Failed to get SDL2 libs"
 	@echo "Library Paths:"
 	@ldconfig -p | grep SDL || echo "No SDL libraries found in ldconfig"
-
