@@ -3,4 +3,5 @@
 
 char *strdup(const char *s);
 
-#endif // !STRING_EX_H_
+#endif  // STRING_EX_H_
+
