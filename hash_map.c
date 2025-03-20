@@ -1,5 +1,8 @@
 #include "hash_map.h"
-#include "string.h"
+#include "string_ex.h"
+#include <stdlib.h>
+#include <string.h>
+
 
 unsigned int hash(const char *key) {
   unsigned int hash = 0;
@@ -21,7 +24,7 @@ hash_map_ptr create_hash_map(void) {
 
 void insert(hash_map_ptr map, const char *key, int value) {
   unsigned int index = hash(key);
-  node_ptr new_node = (node_ptr)malloc(sizeof(node_t));
+  node_ptr new_node = malloc(sizeof(node_t));
   new_node->key = strdup(key);
   new_node->value = value;
   new_node->next = map->table[index];
