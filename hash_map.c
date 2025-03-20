@@ -1,4 +1,5 @@
 #include "hash_map.h"
+#include "string.h"
 
 unsigned int hash(const char *key) {
   unsigned int hash = 0;
