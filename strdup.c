@@ -1,4 +1,4 @@
-#include "string_ex.h"
+#include "strdup.h"
 
 #include <stdlib.h>
 #include <string.h>

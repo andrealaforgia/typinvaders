@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "string_ex.h"
+#include "strdup.h"
 
 unsigned int hash(const char *key) {
   unsigned int hash = 0;

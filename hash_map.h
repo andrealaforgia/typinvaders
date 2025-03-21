@@ -1,6 +1,7 @@
 #ifndef HASH_MAP_H_
 #define HASH_MAP_H_
 
+
 #define table_size 100
 
 typedef struct node_t {
