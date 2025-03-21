@@ -4,17 +4,17 @@
 #include <string.h>
 
 char *strdup(const char *s) {
-    if (s == NULL) {
-        return NULL;
-    }
+  if (s == NULL) {
+    return NULL;
+  }
 
-    size_t len = strlen(s) + 1;  // +1 for the null terminator
-    char *copy = (char *)malloc(len);
-    
-    if (copy == NULL) {
-        return NULL;  // Return NULL if memory allocation fails
-    }
+  size_t len = strlen(s) + 1;  // +1 for the null terminator
+  char *copy = (char *)malloc(len);
 
-    memcpy(copy, s, len);
-    return copy;
+  if (copy == NULL) {
+    return NULL;  // Return NULL if memory allocation fails
+  }
+
+  memcpy(copy, s, len);
+  return copy;
 }

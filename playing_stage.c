@@ -22,8 +22,8 @@
 #include "saucer.h"
 #include "score.h"
 #include "sharpnel.h"
+#include "sprite.h"
 #include "text.h"
-
 static game_ptr game = NULL;
 static graphics_context_ptr graphics_context = NULL;
 static audio_context_ptr audio_context = NULL;

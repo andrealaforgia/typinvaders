@@ -1,8 +1,9 @@
 #include "hash_map.h"
-#include "string_ex.h"
+
 #include <stdlib.h>
 #include <string.h>
 
+#include "string_ex.h"
 
 unsigned int hash(const char *key) {
   unsigned int hash = 0;

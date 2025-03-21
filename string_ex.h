@@ -4,4 +4,3 @@
 char *strdup(const char *s);
 
 #endif  // STRING_EX_H_
-
