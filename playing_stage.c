@@ -27,6 +27,7 @@
 static game_ptr game = NULL;
 static graphics_context_ptr graphics_context = NULL;
 static audio_context_ptr audio_context = NULL;
+static render_context_ptr render_context = NULL;
 static fps_tracker_t fps_tracker;
 
 /* ---- ==== ---- ==== sound ==== ---- ==== ---- */
@@ -502,6 +503,8 @@ void init_playing_stage(const game_ptr _game) {
   game = _game;
   graphics_context = &game->graphics_context;
   audio_context = &game->audio_context;
+  sprite_sheet = create_sprite_sheet(graphics_context, "./assets/sprites/ship.png");
+  render_context = create_render_context(graphics_context, sprite_sheet);
 }
 
 game_stage_action_t handle_playing_stage(void) {

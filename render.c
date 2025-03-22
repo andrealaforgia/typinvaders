@@ -9,8 +9,8 @@
 #include "saucer.h"
 #include "sharpnel.h"
 #include "ship.h"
+#include "sprite.h"
 #include "text.h"
-
 const coords_t OBJECT_COORDS[] = {
     // asteroid 1
     {0, 4, 0},
@@ -105,6 +105,14 @@ const bounds_t ASTEROID_BOUNDS[] = {{0, 11}, {11, 24}, {24, 36}, {36, 49}};
 
 const bounds_t SAUCER_BOUNDS = {69, 81};
 
+
+render_context_t create_render_context(const graphics_context_t graphics_context, const render_context_t render_context){
+  render_context_t render_context;
+  render_context.graphics_context=graphics_context;
+  render_context.render_context=render_context;
+  return render_context;
+}
+
 ALWAYS_INLINE void render_object(const graphics_context_ptr graphics_context,
                                  bounds_t bounds, const point_ptr position,
                                  int scale, int color) {
@@ -133,25 +141,28 @@ ALWAYS_INLINE void render_saucer(const graphics_context_ptr graphics_context,
                 saucer->scale, COLOR_RED);
 }
 
-ALWAYS_INLINE void _render_ship(const graphics_context_ptr graphics_context,
+ALWAYS_INLINE void _render_ship(const render_context_ptr render_context,
                                 const int ship_rotation_index,
                                 const int ship_scale,
                                 const point_ptr ship_position,
                                 const bool thrusting, color_t ship_color) {
-  point_t points[NUMBER_OF_POINTS];
+  /*point_t points[NUMBER_OF_POINTS];
   create_ship_points(ship_rotation_index, ship_scale, ship_position, points);
   int number_of_points = thrusting ? NUMBER_OF_POINTS : NUMBER_OF_POINTS - 2;
   for (int i = 0; i < number_of_points; i++) {
     int j = i == number_of_points - 1 ? 0 : i + 1;
     draw_line_between_points(graphics_context, &points[i], &points[j],
                              ship_color);
-  }
+  }*/
+  sprite_ptr ship_sprite = render_context.get_sprite("ship");
+  render_sprite(render_context.graphics_context, sprite, ship_position.x, ship_position.y,
+                0.0);
 }
 
 ALWAYS_INLINE
-void render_ship(const graphics_context_ptr graphics_context,
+void render_ship(const render_context_ptr render_context,
                  const ship_ptr ship) {
-  _render_ship(graphics_context, ship->rotation_index, ship->scale,
+  _render_ship(render_context, ship->rotation_index, ship->scale,
                &ship->position, ship->thrusting, COLOR_WHITE);
 }
 

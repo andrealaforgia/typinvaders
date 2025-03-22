@@ -19,6 +19,7 @@ typedef struct {
 
 sprite_sheet_t create_sprite_sheet(const graphics_context_ptr graphics_context,
                                    const char* texture_path);
+sprite_sheet_ptr get_sprite(const sprite_sheet_ptr sprite_sheet, const char* sprite_name);
 sprite_t create_sprite(const sprite_sheet_ptr sprite_sheet, int x, int y,
                        int size);
 void render_sprite(const graphics_context_ptr graphics_context,
