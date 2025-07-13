@@ -26,7 +26,7 @@ sprite_t create_sprite(const sprite_sheet_ptr sprite_sheet, int x, int y,
 
 void render_sprite(const graphics_context_ptr graphics_context,
                    const sprite_ptr sprite, int screen_x, int screen_y,
-                   float angle);
+                   float angle, float zoom);
 
 void destroy_sprite_sheet(const sprite_sheet_ptr sprite_sheet);
 

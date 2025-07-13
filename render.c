@@ -156,9 +156,9 @@ ALWAYS_INLINE void _render_ship(const render_context_ptr render_context,
     draw_line_between_points(graphics_context, &points[i], &points[j],
                              ship_color);
   }*/
-  sprite_ptr sprite = get(&render_context->sprite_map, "ship");
-  render_sprite(render_context->graphics_context, sprite, ship_position->x,
-                ship_position->y, 0.0);
+  // sprite_ptr sprite = get(&render_context->sprite_map, "ship");
+  // render_sprite(render_context->graphics_context, sprite, ship_position->x,
+  //               ship_position->y, 0.0);
 }
 
 ALWAYS_INLINE

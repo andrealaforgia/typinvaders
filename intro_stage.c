@@ -144,7 +144,9 @@ game_stage_action_t handle_intro_stage(void) {
     &sprite, 
     graphics_context->screen_width/2,
     graphics_context->screen_height/2,
-    0);
+    0,
+    4);
+
     for (int i = 0; i < ASTEROIDS_COUNT; i++) {
       wrap_animate(graphics_context, &asteroids[i].position,
                    &asteroids[i].velocity);

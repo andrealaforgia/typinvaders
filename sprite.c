@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "inline.h"
+
 #include "graphics.h"
 
 sprite_sheet_t create_sprite_sheet(const graphics_context_ptr graphics_context,
@@ -38,12 +40,32 @@ sprite_t create_sprite(const sprite_sheet_ptr sprite_sheet, int x, int y,
   return sprite;
 }
 
-void render_sprite(const graphics_context_ptr graphics_context,
-                   const sprite_ptr sprite, int screen_x, int screen_y,
-                   float angle) {
+ALWAYS_INLINE void render_sprite(const graphics_context_ptr graphics_context,
+                   const sprite_ptr sprite,
+                   int screen_x, int screen_y,
+                   float angle,
+                   float zoom) {
   SDL_Rect src_rect = {sprite->x, sprite->y, sprite->width, sprite->height};
-  SDL_Rect dst_rect = {screen_x, screen_y, sprite->width, sprite->height};
-  SDL_Point center = {sprite->width / 2, sprite->height / 2};
-  SDL_RenderCopyEx(graphics_context->renderer, sprite->sheet->texture,
-                   &src_rect, &dst_rect, angle, &center, SDL_FLIP_NONE);
+  SDL_Rect dst_rect = {
+    screen_x,
+    screen_y,
+    (int)(sprite->width * zoom),
+    (int)(sprite->height * zoom)
+  };
+
+  SDL_Point center = {
+    dst_rect.w / 2,
+    dst_rect.h / 2
+  };
+
+  SDL_RenderCopyEx(
+    graphics_context->renderer,
+    sprite->sheet->texture,
+    &src_rect,
+    &dst_rect,
+    angle,
+    &center,
+    SDL_FLIP_NONE
+  );
 }
+
