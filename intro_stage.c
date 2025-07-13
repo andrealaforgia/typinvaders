@@ -19,6 +19,8 @@
 #include "saucer.h"
 #include "text.h"
 
+#include "sprite.h"
+
 #define TITLE_TEXT "ASTEROIDS"
 #define ACTION_TEXT "PRESS SPACE TO START"
 #define ACTION_TEXT_FLASHING_TICKS 750
@@ -56,6 +58,7 @@ static int copyright_text_scale;
 void init_intro_stage(const game_ptr _game) {
   game = _game;
   graphics_context = &game->graphics_context;
+
 
   title_text_scale = (graphics_context->screen_height * 25) / 900;
   title_text_dimensions =
@@ -133,6 +136,15 @@ game_stage_action_t handle_intro_stage(void) {
 
     clear_frame(graphics_context);
 
+  sprite_sheet_t sprite_sheet = create_sprite_sheet(graphics_context, "./assets/sprites/font.png");
+
+  sprite_t sprite = create_sprite(&sprite_sheet, 0, 0, 50, 50);
+
+  render_sprite(graphics_context, 
+    &sprite, 
+    graphics_context->screen_width/2,
+    graphics_context->screen_height/2,
+    0);
     for (int i = 0; i < ASTEROIDS_COUNT; i++) {
       wrap_animate(graphics_context, &asteroids[i].position,
                    &asteroids[i].velocity);

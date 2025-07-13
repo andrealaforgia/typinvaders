@@ -14,16 +14,16 @@ unsigned int hash(const char *key) {
   return hash % table_size;
 }
 
-hash_map_ptr create_hash_map(void) {
-  hash_map_ptr map = malloc(sizeof(hash_map_t));
-  map->table = malloc(table_size);
+hash_map_t create_hash_map(void) {
+  hash_map_t map;
+  map.table = malloc(table_size * sizeof(node_t));
   for (int i = 0; i < table_size; i++) {
-    map->table[i] = NULL;
+    map.table[i] = NULL;
   }
   return map;
 }
 
-void insert(hash_map_ptr map, const char *key, int value) {
+void insert(hash_map_ptr map, const char *key, void *value) {
   unsigned int index = hash(key);
   node_ptr new_node = malloc(sizeof(node_t));
   new_node->key = strdup(key);
@@ -32,7 +32,7 @@ void insert(hash_map_ptr map, const char *key, int value) {
   map->table[index] = new_node;
 }
 
-int get(hash_map_ptr map, const char *key) {
+void *get(hash_map_ptr map, const char *key) {
   unsigned int index = hash(key);
   node_ptr current = map->table[index];
   while (current) {
@@ -41,7 +41,7 @@ int get(hash_map_ptr map, const char *key) {
     }
     current = current->next;
   }
-  return -1;  // Key not found
+  return NULL;  // Key not found
 }
 
 void remove_key(hash_map_ptr map, const char *key) {

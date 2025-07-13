@@ -5,12 +5,14 @@
 #include "coords.h"
 #include "geometry.h"
 #include "graphics.h"
+#include "hash_map.h"
 #include "inline.h"
 #include "saucer.h"
 #include "sharpnel.h"
 #include "ship.h"
 #include "sprite.h"
 #include "text.h"
+
 const coords_t OBJECT_COORDS[] = {
     // asteroid 1
     {0, 4, 0},
@@ -105,11 +107,11 @@ const bounds_t ASTEROID_BOUNDS[] = {{0, 11}, {11, 24}, {24, 36}, {36, 49}};
 
 const bounds_t SAUCER_BOUNDS = {69, 81};
 
-
-render_context_t create_render_context(const graphics_context_t graphics_context, const render_context_t render_context){
+render_context_t create_render_context(
+    const graphics_context_ptr graphics_context) {
   render_context_t render_context;
-  render_context.graphics_context=graphics_context;
-  render_context.render_context=render_context;
+  render_context.graphics_context = graphics_context;
+  render_context.sprite_map = create_hash_map();
   return render_context;
 }
 
@@ -154,14 +156,13 @@ ALWAYS_INLINE void _render_ship(const render_context_ptr render_context,
     draw_line_between_points(graphics_context, &points[i], &points[j],
                              ship_color);
   }*/
-  sprite_ptr ship_sprite = render_context.get_sprite("ship");
-  render_sprite(render_context.graphics_context, sprite, ship_position.x, ship_position.y,
-                0.0);
+  sprite_ptr sprite = get(&render_context->sprite_map, "ship");
+  render_sprite(render_context->graphics_context, sprite, ship_position->x,
+                ship_position->y, 0.0);
 }
 
 ALWAYS_INLINE
-void render_ship(const render_context_ptr render_context,
-                 const ship_ptr ship) {
+void render_ship(const render_context_ptr render_context, const ship_ptr ship) {
   _render_ship(render_context, ship->rotation_index, ship->scale,
                &ship->position, ship->thrusting, COLOR_WHITE);
 }
@@ -182,7 +183,7 @@ ALWAYS_INLINE void render_destroyed_ship(
 ALWAYS_INLINE void render_lives(const graphics_context_ptr graphics_context,
                                 point_t position, const int lives) {
   for (int i = 0; i < lives; i++) {
-    _render_ship(graphics_context, 0, 1, &position, 0, COLOR_WHITE);
+    //_render_ship(graphics_context, 0, 1, &position, 0, COLOR_WHITE);
     position.x -= 20;
   }
 }

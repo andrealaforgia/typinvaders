@@ -27,7 +27,7 @@
 static game_ptr game = NULL;
 static graphics_context_ptr graphics_context = NULL;
 static audio_context_ptr audio_context = NULL;
-static render_context_ptr render_context = NULL;
+static render_context_t render_context;
 static fps_tracker_t fps_tracker;
 
 /* ---- ==== ---- ==== sound ==== ---- ==== ---- */
@@ -87,7 +87,7 @@ static ALWAYS_INLINE void animate_ship(void) {
 static ALWAYS_INLINE void update_ship(void) {
   animate_ship();
   if (ship_is_not_immune() || get_clock_ticks_ms() % 5 == 0) {
-    render_ship(graphics_context, &ship);
+    render_ship(&render_context, &ship);
   }
 }
 
@@ -503,8 +503,11 @@ void init_playing_stage(const game_ptr _game) {
   game = _game;
   graphics_context = &game->graphics_context;
   audio_context = &game->audio_context;
-  sprite_sheet = create_sprite_sheet(graphics_context, "./assets/sprites/ship.png");
-  render_context = create_render_context(graphics_context, sprite_sheet);
+  // sprite_sheet_t sprite_sheet =
+  //     create_sprite_sheet(graphics_context, "./assets/sprites/ship.png");
+  // sprite_t ship_sprite = create_sprite(&sprite_sheet, 0, 0, 170, 120);
+  render_context = create_render_context(graphics_context);
+  // insert(&render_context.sprite_map, "ship", &ship_sprite);
 }
 
 game_stage_action_t handle_playing_stage(void) {
