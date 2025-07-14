@@ -19,6 +19,7 @@
 #include "saucer.h"
 #include "text.h"
 
+#include "hash_map.h"
 #include "sprite.h"
 
 #define TITLE_TEXT "ASTEROIDS"
@@ -54,6 +55,8 @@ static point_t action_text_position;
 
 static text_dimensions_t copyright_text_dimensions;
 static int copyright_text_scale;
+
+static sprite_t font[256] = {0};
 
 void init_intro_stage(const game_ptr _game) {
   game = _game;
@@ -115,6 +118,34 @@ void init_intro_stage(const game_ptr _game) {
       calculate_text_dimensions(COPYRIGHT_TEXT, copyright_text_scale);
 }
 
+void load_font_from_sprite_sheet(const sprite_sheet_ptr sprite_sheet) {
+  const char* chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789-";
+  int x = 0;
+  int y = 0;
+  int i = 0;
+  while (chars[i]) {
+      if (chars[i] == 'P' || chars[i] == '0') {
+        x = 0;
+        y += 8;  
+      }
+      font[(int)chars[i]] = create_sprite(sprite_sheet, x, y, 8, 8); 
+      x += 8;
+      ++i;
+  }
+}
+
+void write(const graphics_context_ptr graphics_context, char* text, int x, int y, int zoom) {
+  int char_x = x;
+  for (int i=0; text[i]; i++){
+    if (text[i] == ' ') {
+      char_x += 4*zoom;
+      continue;
+    }
+    render_sprite(graphics_context, &font[(int)(text[i])], char_x, y, 0, zoom);
+    char_x += 8*zoom;
+  }
+}
+
 game_stage_action_t handle_intro_stage(void) {
   int last_action_text_ticks = get_clock_ticks_ms();
 
@@ -136,16 +167,11 @@ game_stage_action_t handle_intro_stage(void) {
 
     clear_frame(graphics_context);
 
-  sprite_sheet_t sprite_sheet = create_sprite_sheet(graphics_context, "./assets/sprites/font.png");
+    sprite_sheet_t sprite_sheet = create_sprite_sheet(graphics_context, "./assets/sprites/font.png");
 
-  sprite_t sprite = create_sprite(&sprite_sheet, 0, 0, 50, 50);
-
-  render_sprite(graphics_context, 
-    &sprite, 
-    graphics_context->screen_width/2,
-    graphics_context->screen_height/2,
-    0,
-    4);
+    load_font_from_sprite_sheet(&sprite_sheet);
+    
+    write(graphics_context, "PRESS ANY KEY TO START!", graphics_context->screen_width/2, graphics_context->screen_height/2, 8);
 
     for (int i = 0; i < ASTEROIDS_COUNT; i++) {
       wrap_animate(graphics_context, &asteroids[i].position,
