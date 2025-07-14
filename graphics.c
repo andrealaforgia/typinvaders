@@ -108,7 +108,8 @@ graphics_context_t init_graphics_context(int display, int display_mode,
   SDL_Log("Drawable Size: w=%d h=%d\n", drawable_w, drawable_h);
 
   graphics_context.renderer =
-      SDL_CreateRenderer(graphics_context.window, -1, SDL_RENDERER_ACCELERATED);
+    SDL_CreateRenderer(graphics_context.window, -1,
+                       SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);  
   if (!graphics_context.renderer) {
     SDL_Log("SDL_CreateRenderer Error: %s\n", SDL_GetError());
     abort();

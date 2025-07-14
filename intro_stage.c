@@ -146,6 +146,13 @@ void write(const graphics_context_ptr graphics_context, char* text, int x, int y
   }
 }
 
+typedef struct pacman_t {
+  sprite_t right_sprites[4];
+  sprite_t death_sprites[9];
+  int sprite_index;
+} pacman_t;
+
+
 game_stage_action_t handle_intro_stage(void) {
   int last_action_text_ticks = get_clock_ticks_ms();
 
@@ -159,6 +166,19 @@ game_stage_action_t handle_intro_stage(void) {
 
   int last_frame_ticks = get_clock_ticks_ms();
 
+    sprite_sheet_t font_sprite_sheet = create_sprite_sheet(graphics_context, "./assets/sprites/font.png");
+    load_font_from_sprite_sheet(&font_sprite_sheet);
+
+    sprite_sheet_t general_sprite_sheet = create_sprite_sheet(graphics_context, "./assets/sprites/general_sprites.png");
+
+    pacman_t pacman;
+    pacman.sprite_index=0;
+    pacman.right_sprites[0]=create_sprite(&general_sprite_sheet, 456, 0, 16, 16);
+    pacman.right_sprites[1]=create_sprite(&general_sprite_sheet, 456+16, 0, 16, 16);
+    pacman.right_sprites[2]=create_sprite(&general_sprite_sheet, 456+32, 0, 16, 16);
+    pacman.right_sprites[3]=pacman.right_sprites[1];
+    int pacman_last_ticks = last_frame_ticks;
+
   while (true) {
     if (elapsed_from(last_frame_ticks) < (1000 / game->settings.fps)) {
       continue;
@@ -167,12 +187,18 @@ game_stage_action_t handle_intro_stage(void) {
 
     clear_frame(graphics_context);
 
-    sprite_sheet_t sprite_sheet = create_sprite_sheet(graphics_context, "./assets/sprites/font.png");
-
-    load_font_from_sprite_sheet(&sprite_sheet);
+//    write(graphics_context, "PRESS ANY KEY TO START!", graphics_context->screen_width/2, graphics_context->screen_height/2, 8);
     
-    write(graphics_context, "PRESS ANY KEY TO START!", graphics_context->screen_width/2, graphics_context->screen_height/2, 8);
+    if (last_frame_ticks-pacman_last_ticks > 50) {
+      pacman.sprite_index++;
+      if (pacman.sprite_index == 4){
+        pacman.sprite_index=0;
+      }
+      pacman_last_ticks = get_clock_ticks_ms();
+    }
 
+    render_sprite(graphics_context, &pacman.right_sprites[pacman.sprite_index], graphics_context->screen_width/2, graphics_context->screen_height/4, 0, 8);
+    
     for (int i = 0; i < ASTEROIDS_COUNT; i++) {
       wrap_animate(graphics_context, &asteroids[i].position,
                    &asteroids[i].velocity);
