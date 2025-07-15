@@ -220,8 +220,10 @@ game_stage_action_t handle_intro_stage(void) {
         //     render_sprite(graphics_context, &maze.parts[i], i * 8 * 2 + 100,
         //                   100, 0, 2);
         // }
+     
+        int zoom = 4;
        
-       render_sprite(graphics_context, &total_sprite, 50, 50, 0, 3); 
+       render_sprite(graphics_context, &total_sprite, 50, 50, 0, zoom); 
 
         if (last_frame_ticks - pacman_last_ticks > 50) {
             pacman.sprite_index++;
@@ -234,22 +236,22 @@ game_stage_action_t handle_intro_stage(void) {
         render_sprite(graphics_context,
                       &pacman.right_sprites[pacman.sprite_index],
                       graphics_context->screen_width / 2,
-                      graphics_context->screen_height / 4, 0, 8);
+                      graphics_context->screen_height / 4, 0, zoom);
                   
         int y = 50;
         int x = 50;
         for (int i=0; i<100; i++){
-          draw_line(graphics_context, x, 50, x, 1024,COLOR_YELLOW);
+          draw_line(graphics_context, x*zoom, 50, x*zoom, 1024, COLOR_YELLOW);
           if (i == 28){
             x -= 10;
           } else if (i == 57) {
             x -= 14;
           }
-          x = x+8*3;
+          x += 8;
         } 
 
         for (int i=0; i<100; i++){
-          draw_line(graphics_context, 50, 50+i*8*3, 3000, 50+i*8*3, COLOR_YELLOW);
+          draw_line(graphics_context, 50, 50+i*8*zoom, 3000, 50+i*8*zoom, COLOR(0,255, 255));
         } 
         // for (int i = 0; i < ASTEROIDS_COUNT; i++) {
         //     wrap_animate(graphics_context, &asteroids[i].position,

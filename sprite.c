@@ -12,15 +12,28 @@
 sprite_sheet_t create_sprite_sheet(const graphics_context_ptr graphics_context,
                                    const char* texture_path) {
   sprite_sheet_t sprite_sheet;
-  sprite_sheet.texture =
-      IMG_LoadTexture(graphics_context->renderer, texture_path);
-  if (!sprite_sheet.texture) {
-    fprintf(stderr, "Failed to load sprite sheet texture: %s\n",
-            IMG_GetError());
+
+  SDL_Surface* surface = IMG_Load(texture_path);
+  if (!surface) {
+    fprintf(stderr, "Failed to load image: %s\n", IMG_GetError());
     exit(EXIT_FAILURE);
   }
+
+  // Set color key to make black (0,0,0) transparent
+  Uint32 color_key = SDL_MapRGB(surface->format, 0, 0, 0);
+  SDL_SetColorKey(surface, SDL_TRUE, color_key);
+
+  sprite_sheet.texture = SDL_CreateTextureFromSurface(graphics_context->renderer, surface);
+  SDL_FreeSurface(surface);
+
+  if (!sprite_sheet.texture) {
+    fprintf(stderr, "Failed to create texture: %s\n", SDL_GetError());
+    exit(EXIT_FAILURE);
+  }
+
   return sprite_sheet;
 }
+
 
 void free_sprite_sheet(const sprite_sheet_ptr sprite_sheet) {
   if (!sprite_sheet) return;
