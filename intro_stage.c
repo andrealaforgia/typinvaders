@@ -221,38 +221,61 @@ game_stage_action_t handle_intro_stage(void) {
         //                   100, 0, 2);
         // }
      
-        int zoom = 4;
-       
+        int zoom = 3;
+      
        render_sprite(graphics_context, &total_sprite, 50, 50, 0, zoom); 
 
-        if (last_frame_ticks - pacman_last_ticks > 50) {
-            pacman.sprite_index++;
-            if (pacman.sprite_index == 4) {
-                pacman.sprite_index = 0;
-            }
-            pacman_last_ticks = get_clock_ticks_ms();
-        }
+        // if (last_frame_ticks - pacman_last_ticks > 50) {
+        //     pacman.sprite_index++;
+        //     if (pacman.sprite_index == 4) {
+        //         pacman.sprite_index = 0;
+        //     }
+        //     pacman_last_ticks = get_clock_ticks_ms();
+        // }
 
-        render_sprite(graphics_context,
-                      &pacman.right_sprites[pacman.sprite_index],
-                      graphics_context->screen_width / 2,
-                      graphics_context->screen_height / 4, 0, zoom);
+        // render_sprite(graphics_context,
+        //               &pacman.right_sprites[pacman.sprite_index],
+        //               graphics_context->screen_width / 2,
+        //               graphics_context->screen_height / 4, 0, zoom);
                   
         int y = 50;
         int x = 50;
-        for (int i=0; i<100; i++){
-          draw_line(graphics_context, x*zoom, 50, x*zoom, 1024, COLOR_YELLOW);
-          if (i == 28){
-            x -= 10;
-          } else if (i == 57) {
-            x -= 14;
-          }
-          x += 8;
-        } 
+        for (int i=0; i<29; i++){
+          draw_line(graphics_context, x, 50, x, 3000, COLOR_YELLOW);
+          // if (i == 28){
+          //   x -= 10;
+          // } else if (i == 57) {
+          //   x -= 14;
+          // }
+          x += 8*zoom;
+        }
+        
+        x = 50 + 28*8*zoom + 4*zoom;
+        for (int i=0; i<29; i++){
+          draw_line(graphics_context, x, 50, x, 3000, COLOR(0, 255, 0));
+          // if (i == 28){
+          //   x -= 10;
+          // } else if (i == 57) {
+          //   x -= 14;
+          // }
+          x += 8*zoom;
+        }
 
         for (int i=0; i<100; i++){
-          draw_line(graphics_context, 50, 50+i*8*zoom, 3000, 50+i*8*zoom, COLOR(0,255, 255));
-        } 
+          draw_line(graphics_context, 50, 50+i*8*zoom, 5000, 50+i*8*zoom, COLOR(0,255, 255));
+        }
+        
+        x = 50 + 56*8*zoom + 8*zoom;
+        for (int i=0; i<50; i++){
+          draw_line(graphics_context, x, 50, x, 3000, COLOR_WHITE);
+          // if (i == 28){
+          //   x -= 10;
+          // } else if (i == 57) {
+          //   x -= 14;
+          // }
+          x += 8*zoom;
+        }
+
         // for (int i = 0; i < ASTEROIDS_COUNT; i++) {
         //     wrap_animate(graphics_context, &asteroids[i].position,
         //                  &asteroids[i].velocity);
