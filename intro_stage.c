@@ -204,6 +204,9 @@ game_stage_action_t handle_intro_stage(void) {
 
     sprite_t total_sprite = create_sprite(&total, 0, 0, 680, 248);
 
+    int death_sprite_ticks = get_clock_ticks_ms();
+    int death_sprite_index = 0;
+    
     while (true) {
         if (elapsed_from(last_frame_ticks) < (1000 / game->settings.fps)) {
             continue;
@@ -221,9 +224,9 @@ game_stage_action_t handle_intro_stage(void) {
         //                   100, 0, 2);
         // }
      
-        int zoom = 3;
+        int zoom = 1;
       
-       render_sprite(graphics_context, &total_sprite, 50, 50, 0, zoom); 
+      //  render_sprite(graphics_context, &total_sprite, 0, 0, 0, zoom); 
 
         // if (last_frame_ticks - pacman_last_ticks > 50) {
         //     pacman.sprite_index++;
@@ -238,44 +241,68 @@ game_stage_action_t handle_intro_stage(void) {
         //               graphics_context->screen_width / 2,
         //               graphics_context->screen_height / 4, 0, zoom);
                   
-        int y = 50;
-        int x = 50;
-        for (int i=0; i<29; i++){
-          draw_line(graphics_context, x, 50, x, 3000, COLOR_YELLOW);
-          // if (i == 28){
-          //   x -= 10;
-          // } else if (i == 57) {
-          //   x -= 14;
-          // }
-          x += 8*zoom;
-        }
+        // int y = 0;
+        // int x = 0;
+        // for (int i=0; i<29; i++){
+        //   draw_line(graphics_context, x, 0, x, 3000, COLOR_YELLOW);
+        //   // if (i == 28){
+        //   //   x -= 10;
+        //   // } else if (i == 57) {
+        //   //   x -= 14;
+        //   // }
+        //   x += 8*zoom;
+        // }
         
-        x = 50 + 28*8*zoom + 4*zoom;
-        for (int i=0; i<29; i++){
-          draw_line(graphics_context, x, 50, x, 3000, COLOR(0, 255, 0));
-          // if (i == 28){
-          //   x -= 10;
-          // } else if (i == 57) {
-          //   x -= 14;
-          // }
-          x += 8*zoom;
+        // x = 28*8*zoom + 4*zoom;
+        // printf("maze x: %d\n", x);
+        // for (int i=0; i<29; i++){
+        //   draw_line(graphics_context, x, 0, x, 3000, COLOR(0, 255, 0));
+        //   // if (i == 28){
+        //   //   x -= 10;
+        //   // } else if (i == 57) {
+        //   //   x -= 14;
+        //   // }
+        //   x += 8*zoom;
+        // }
+
+        // for (int i=0; i<100; i++){
+        //   draw_line(graphics_context, 0, i*8*zoom, 5000, i*8*zoom, COLOR(0,255, 255));
+        // }
+        
+        // x = 56*8*zoom + 8*zoom;
+        // printf("sprites x: %d\n", x);
+        // for (int i=0; i<50; i++){
+        //   draw_line(graphics_context, x, 0, x, 3000, COLOR_WHITE);
+        //   // if (i == 28){
+        //   //   x -= 10;
+        //   // } else if (i == 57) {
+        //   //   x -= 14;
+        //   // }
+        //   x += 8*zoom;
+        // }
+
+        sprite_t death_sprites[11];
+         death_sprites[0] = create_sprite(&total, 456+16*3, 0, 16, 16);
+          death_sprites[1] = create_sprite(&total, 456+16*4, 0, 16, 16);
+          death_sprites[2] = create_sprite(&total, 456+16*5, 0, 16, 16);
+          death_sprites[3] = create_sprite(&total, 456+16*6, 0, 16, 16);
+          death_sprites[4] = create_sprite(&total, 456+16*7, 0, 16, 16);
+          death_sprites[5] = create_sprite(&total, 456+16*8, 0, 16, 16);
+          death_sprites[6] = create_sprite(&total, 456+16*9, 0, 16, 16);
+          death_sprites[7] = create_sprite(&total, 456+16*10, 0, 16, 16);
+          death_sprites[8] = create_sprite(&total, 456+16*11, 0, 16, 16);
+          death_sprites[9] = create_sprite(&total, 456+16*12, 0, 16, 16);
+          death_sprites[10] = create_sprite(&total, 456+16*13, 0, 16, 16);
+        
+        if (get_clock_ticks_ms() - death_sprite_ticks > 150) {
+          death_sprite_index++;
+          if (death_sprite_index == 11) {
+            death_sprite_index = 0;
+          }
+          death_sprite_ticks = get_clock_ticks_ms();
         }
 
-        for (int i=0; i<100; i++){
-          draw_line(graphics_context, 50, 50+i*8*zoom, 5000, 50+i*8*zoom, COLOR(0,255, 255));
-        }
-        
-        x = 50 + 56*8*zoom + 8*zoom;
-        for (int i=0; i<50; i++){
-          draw_line(graphics_context, x, 50, x, 3000, COLOR_WHITE);
-          // if (i == 28){
-          //   x -= 10;
-          // } else if (i == 57) {
-          //   x -= 14;
-          // }
-          x += 8*zoom;
-        }
-
+          render_sprite(graphics_context, &death_sprites[death_sprite_index], 500, 100, 0, 4);
         // for (int i = 0; i < ASTEROIDS_COUNT; i++) {
         //     wrap_animate(graphics_context, &asteroids[i].position,
         //                  &asteroids[i].velocity);
