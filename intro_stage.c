@@ -164,21 +164,6 @@ typedef struct maze_t {
     sprite_t layout[31][28];
 } maze_t;
 
-// const char* maze_symbols[MAZE_HEIGHT] = {
-// "0111111111111231111111111114",
-// "5............67............8",
-// "5.9AAB.9AAAB.67.9AAAB.9AAB.8",
-// "5*6  7.6   7.67.6   7.6  7*8",
-// "5.CDDE.CDDDE.CE.CDDDE.CDDE.8",
-// "5..........................8",
-// "5.9AAB.9B.9AAAAAAB.9B.9AAB.8",
-// "5.CDDE.67.CDDB9DDE.67.CDDE.8",
-// "5......67....67....67......8",
-// "FGGGGH.6CDDB 67 9AAE7.IGGGGJ",
-// "     5.69AAE CE CDDB7.8     ",
-// "     5.67          67.8     ", 
-// };
-
 const char* maze_symbols[] = {
 "0111111111111231111111111114",
 "5............67............8",
