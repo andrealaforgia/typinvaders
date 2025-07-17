@@ -187,20 +187,32 @@ const char* maze_symbols[] = {
 "5.CDDE.CDDDE.CE.CDDDE.CDDE.8",
 "5..........................8",
 "5.9AAB.9B.9AAAAAAB.9B.9AAB.8",
-"5.CDDE.67.CDDB9DDE.67.CDDE.8",
+"5.CDDE.67.CDDFGDDE.67.CDDE.8",
 "5......67....67....67......8",
-"FGGGGH.6C    67 9AAE7.IGGGGJ",
-"     5.6C    CE CDDB7.8     ",
+"HIIIIJ.6KAAB 67 9AAL7.MIIIIN",
+"     5.6GDDE CE CDDF7.8     ",
 "     5.67          67.8     ",
-"     5.67 KPPLLPPM 67.8     ",
-"11111N.CE S      T CE.O11111",
-"      .   S      T   .      ",
-"GGGGGH.9B S      T 9B.IGGGGG",
-"     5.67 QUUUUUUR 67.8     ",
+"     5.67 OPPQQPPR 67.8     ",
+"11111S.CE 8      5 CE.T11111",
+"      .   8      5   .      ",
+"IIIIIJ.9B 8      5 67.MIIIII", 
+"     5.67 WXXXXXXY 67.8     ",
 "     5.67          67.8     ",
 "     5.67 9AAAAAAB 67.8     ",
-"01111N.CE CDDB9DDE CE.O11114",
+"01111S.CE CDDFGDDE CE.T11114",
+"5............67............8",
+"5.9AAB.9AAAB.67.9AAAB.9AAB.8",
+"5.CDF7.CDDDE.CE.CDDDE.6GDE.8",
+"5*..67.......  .......67..*8",
+"KAB.67.9B.9AAAAAAB.9B.67.9AL",
+"GDE.CE.67.CDDFGDDE.67.CE.CDF",
+"5......67....67....67......8",
+"5.9AAAALKAAB.67.9AALKAAAAB.8",
+"5.CDDDDDDDDE.CE.CDDDDDDDDE.8",
+"5..........................8",
+"HIIIIIIIIIIIIIIIIIIIIIIIIIIN"
 };
+
 
 
 game_stage_action_t handle_intro_stage(void) {
@@ -354,6 +366,7 @@ game_stage_action_t handle_intro_stage(void) {
                 switch (maze_symbols[y][x]) {
                     case ' ': continue;
                     case '.': sprite = maze_parts[1][1]; break;
+                    case '*': sprite = maze_parts[3][1]; break;
                     case '0': sprite = maze_parts[0][0]; break;
                     case '1': sprite = maze_parts[0][1]; break;
                     case '2': sprite = maze_parts[0][13]; break;
@@ -369,22 +382,21 @@ game_stage_action_t handle_intro_stage(void) {
                     case 'C': sprite = maze_parts[4][2]; break;
                     case 'D': sprite = maze_parts[4][3]; break;
                     case 'E': sprite = maze_parts[4][5]; break;
-                    case 'F': sprite = maze_parts[9][0]; break;
-                    case 'G': sprite = maze_parts[9][1]; break;
-                    case 'H': sprite = maze_parts[9][5]; break;
-                    case 'I': sprite = maze_parts[9][22]; break;
-                    case 'J': sprite = maze_parts[9][27]; break;
-                    case 'K': sprite = maze_parts[12][10]; break;
-                    case 'L': sprite = maze_parts[12][13]; break;
-                    case 'M': sprite = maze_parts[12][17]; break;
-                    case 'N': sprite = maze_parts[13][5]; break;
-                    case 'O': sprite = maze_parts[13][22]; break;
+                    case 'F': sprite = maze_parts[7][13]; break;
+                    case 'G': sprite = maze_parts[7][14]; break;
+                    case 'H': sprite = maze_parts[9][0]; break;
+                    case 'I': sprite = maze_parts[9][1]; break;
+                    case 'J': sprite = maze_parts[9][5]; break;
+                    case 'K': sprite = maze_parts[9][8]; break;
+                    case 'L': sprite = maze_parts[9][19]; break;
+                    case 'M': sprite = maze_parts[9][22]; break;
+                    case 'N': sprite = maze_parts[9][27]; break;
+                    case 'O': sprite = maze_parts[12][10]; break;
                     case 'P': sprite = maze_parts[12][11]; break;
-                    case 'Q': sprite = maze_parts[16][10]; break;
-                    case 'R': sprite = maze_parts[16][17]; break;
-                    case 'S': sprite = maze_parts[13][10]; break;
-                    case 'T': sprite = maze_parts[13][17]; break;
-                    case 'U': sprite = maze_parts[16][11]; break;
+                    case 'Q': sprite = maze_parts[12][13]; break;
+                    case 'R': sprite = maze_parts[12][17]; break;
+                    case 'S': sprite = maze_parts[13][5]; break;
+                    case 'T': sprite = maze_parts[13][22]; break;
                 }
                render_sprite(graphics_context, &sprite, x*8*zoom, 100+y*8*zoom, 0, zoom);
             }
