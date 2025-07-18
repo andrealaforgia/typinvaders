@@ -180,8 +180,8 @@ const char* maze_symbols[] = {
 "     5.67 OPPQQPPR 67.8     ",
 "11111S.CE 8      5 CE.T11111",
 "      .   8      5   .      ",
-"IIIIIJ.9B 8      5 67.MIIIII", 
-"     5.67 WXXXXXXY 67.8     ",
+"IIIIIJ.9B 8      5 9B.MIIIII", 
+"     5.67 U111111V 67.8     ",
 "     5.67          67.8     ",
 "     5.67 9AAAAAAB 67.8     ",
 "01111S.CE CDDFGDDE CE.T11114",
@@ -189,15 +189,14 @@ const char* maze_symbols[] = {
 "5.9AAB.9AAAB.67.9AAAB.9AAB.8",
 "5.CDF7.CDDDE.CE.CDDDE.6GDE.8",
 "5*..67.......  .......67..*8",
-"KAB.67.9B.9AAAAAAB.9B.67.9AL",
-"GDE.CE.67.CDDFGDDE.67.CE.CDF",
+"WAB.67.9B.9AAAAAAB.9B.67.9AX",
+"YDE.CE.67.CDDFGDDE.67.CE.CDZ",
 "5......67....67....67......8",
 "5.9AAAALKAAB.67.9AALKAAAAB.8",
 "5.CDDDDDDDDE.CE.CDDDDDDDDE.8",
 "5..........................8",
 "HIIIIIIIIIIIIIIIIIIIIIIIIIIN"
 };
-
 
 
 game_stage_action_t handle_intro_stage(void) {
@@ -382,6 +381,12 @@ game_stage_action_t handle_intro_stage(void) {
                     case 'R': sprite = maze_parts[12][17]; break;
                     case 'S': sprite = maze_parts[13][5]; break;
                     case 'T': sprite = maze_parts[13][22]; break;
+                    case 'U': sprite = maze_parts[16][10]; break;
+                    case 'V': sprite = maze_parts[16][17]; break;
+                    case 'W': sprite = maze_parts[24][0]; break;
+                    case 'X': sprite = maze_parts[24][27]; break;
+                    case 'Y': sprite = maze_parts[25][0]; break;
+                    case 'Z': sprite = maze_parts[25][27]; break;
                 }
                render_sprite(graphics_context, &sprite, x*8*zoom, 100+y*8*zoom, 0, zoom);
             }
