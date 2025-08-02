@@ -9,11 +9,11 @@
 #include "window_mode.h"
 
 typedef struct {
-  SDL_Window *window;
-  SDL_Renderer *renderer;
-  int screen_width;
-  int screen_height;
-  point_t screen_center;
+    SDL_Window *window;
+    SDL_Renderer *renderer;
+    int screen_width;
+    int screen_height;
+    point_t screen_center;
 } graphics_context_t, *graphics_context_ptr;
 
 void print_graphics_info(void);
@@ -26,6 +26,8 @@ void draw_line_between_points(const graphics_context_ptr graphics_context,
                               color_t color);
 void draw_line(const graphics_context_ptr graphics_context, int x1, int y1,
                int x2, int y2, color_t color);
+void draw_rectangle(const graphics_context_ptr graphics_context, int x1, int y1,
+                    int x2, int y2, color_t color);
 void draw_pixel(const graphics_context_ptr graphics_context, int x, int y,
                 color_t color);
 void draw_point(const graphics_context_ptr graphics_context, const point_ptr p,

@@ -33,6 +33,8 @@
 
 #define ASTEROIDS_COUNT 150
 
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
+
 static game_ptr game = NULL;
 static graphics_context_ptr graphics_context = NULL;
 
@@ -159,69 +161,45 @@ typedef struct maze_t {
 } maze_t;
 
 const char* maze_symbols[] = {
-"0111111111111231111111111114",
-"5............67............8",
-"5.9AAB.9AAAB.67.9AAAB.9AAB.8",
-"5*6  7.6   7.67.6   7.6  7*8",
-"5.CDDE.CDDDE.CE.CDDDE.CDDE.8",
-"5..........................8",
-"5.9AAB.9B.9AAAAAAB.9B.9AAB.8",
-"5.CDDE.67.CDDFGDDE.67.CDDE.8",
-"5......67....67....67......8",
-"HIIIIJ.6KAAB 67 9AAL7.MIIIIN",
-"     5.6GDDE CE CDDF7.8     ",
-"     5.67          67.8     ",
-"     5.67 OPPQQPPR 67.8     ",
-"11111S.CE 8      5 CE.T11111",
-"      .   8      5   .      ",
-"IIIIIJ.9B 8      5 9B.MIIIII", 
-"     5.67 U111111V 67.8     ",
-"     5.67          67.8     ",
-"     5.67 9AAAAAAB 67.8     ",
-"01111S.CE CDDFGDDE CE.T11114",
-"5............67............8",
-"5.9AAB.9AAAB.67.9AAAB.9AAB.8",
-"5.CDF7.CDDDE.CE.CDDDE.6GDE.8",
-"5*..67.......  .......67..*8",
-"WAB.67.9B.9AAAAAAB.9B.67.9AX",
-"YDE.CE.67.CDDFGDDE.67.CE.CDZ",
-"5......67....67....67......8",
-"5.9AAAALKAAB.67.9AALKAAAAB.8",
-"5.CDDDDDDDDE.CE.CDDDDDDDDE.8",
-"5..........................8",
-"HIIIIIIIIIIIIIIIIIIIIIIIIIIN"
-};
+    "0111111111111231111111111114", "5............67............8",
+    "5.9AAB.9AAAB.67.9AAAB.9AAB.8", "5*6  7.6   7.67.6   7.6  7*8",
+    "5.CDDE.CDDDE.CE.CDDDE.CDDE.8", "5..........................8",
+    "5.9AAB.9B.9AAAAAAB.9B.9AAB.8", "5.CDDE.67.CDDFGDDE.67.CDDE.8",
+    "5......67....67....67......8", "HIIIIJ.6KAAB 67 9AAL7.MIIIIN",
+    "     5.6GDDE CE CDDF7.8     ", "     5.67          67.8     ",
+    "     5.67 OPPQQPPR 67.8     ", "11111S.CE 8      5 CE.T11111",
+    "      .   8      5   .      ", "IIIIIJ.9B 8      5 9B.MIIIII",
+    "     5.67 U111111V 67.8     ", "     5.67          67.8     ",
+    "     5.67 9AAAAAAB 67.8     ", "01111S.CE CDDFGDDE CE.T11114",
+    "5............67............8", "5.9AAB.9AAAB.67.9AAAB.9AAB.8",
+    "5.CDF7.CDDDE.CE.CDDDE.6GDE.8", "5*..67.......  .......67..*8",
+    "WAB.67.9B.9AAAAAAB.9B.67.9AX", "YDE.CE.67.CDDFGDDE.67.CE.CDZ",
+    "5......67....67....67......8", "5.9AAAALKAAB.67.9AALKAAAAB.8",
+    "5.CDDDDDDDDE.CE.CDDDDDDDDE.8", "5..........................8",
+    "HIIIIIIIIIIIIIIIIIIIIIIIIIIN"};
 
 typedef struct rendered_sprite_t {
     sprite_t sprite;
     point_t position;
 } rendered_sprite_t;
 
-typedef enum pacman_status_t {
-    ALIVE,
-    DEAD
-} pacman_status_t;
+typedef enum pacman_status_t { ALIVE, DEAD } pacman_status_t;
 
-typedef enum direction_t {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-} direction_t;
+typedef enum direction_t { UP, DOWN, LEFT, RIGHT } direction_t;
 
 typedef enum pacman_stage_t {
     CLOSED = 0,
     OPENING = 1,
-    OPEN = 2, 
+    OPEN = 2,
     CLOSING = 3
 } pacman_stage_t;
- 
+
 #define DEATH_STAGE_COUNT 11
 
 typedef struct pacman_t {
     point_t position;
     direction_t direction;
-    pacman_status_t status;  
+    pacman_status_t status;
     pacman_stage_t stage;
 } pacman_t;
 
@@ -235,28 +213,41 @@ sprite_t get_pacman_sprite(pacman_stage_t stage, direction_t dir) {
     int base_index = 0;
 
     switch (dir) {
-        case RIGHT: base_index = 1; break;
-        case LEFT:  base_index = 3; break;
-        case UP:    base_index = 5; break;
-        case DOWN:  base_index = 7; break;
+        case RIGHT:
+            base_index = 1;
+            break;
+        case LEFT:
+            base_index = 3;
+            break;
+        case UP:
+            base_index = 5;
+            break;
+        case DOWN:
+            base_index = 7;
+            break;
     }
 
     if (stage == OPENING || stage == CLOSING) {
-        return pacman_sprites[base_index];     // partially open
+        return pacman_sprites[base_index];  // partially open
     } else if (stage == OPEN) {
-        return pacman_sprites[base_index + 1]; // fully open
+        return pacman_sprites[base_index + 1];  // fully open
     }
 
-    return pacman_sprites[0]; // fallback
+    return pacman_sprites[0];  // fallback
 }
 
 pacman_stage_t next_stage(pacman_stage_t current_stage) {
     switch (current_stage) {
-        case CLOSED:   return OPENING;
-        case OPENING:  return OPEN;
-        case OPEN:     return CLOSING;
-        case CLOSING:  return CLOSED;
-        default:       return CLOSED; // fallback in case of invalid input
+        case CLOSED:
+            return OPENING;
+        case OPENING:
+            return OPEN;
+        case OPEN:
+            return CLOSING;
+        case CLOSING:
+            return CLOSED;
+        default:
+            return CLOSED;  // fallback in case of invalid input
     }
 }
 
@@ -280,31 +271,49 @@ game_stage_action_t handle_intro_stage(void) {
     sprite_sheet_t sprite_sheet =
         create_sprite_sheet(graphics_context, "./assets/sprites/sprites.png");
 
-    pacman_sprites[0] = create_sprite(&sprite_sheet, 456 + 32, 0, 16, 16); // Closed mouth
+    pacman_sprites[0] =
+        create_sprite(&sprite_sheet, 456 + 32, 0, 16, 16);  // Closed mouth
 
-    pacman_sprites[1] = create_sprite(&sprite_sheet, 456 + 16, 0, 16, 16); // Partially open mouth (right)
-    pacman_sprites[2] = create_sprite(&sprite_sheet, 456,      0, 16, 16); // Fully open mouth (right)
+    pacman_sprites[1] = create_sprite(&sprite_sheet, 456 + 16, 0, 16,
+                                      16);  // Partially open mouth (right)
+    pacman_sprites[2] = create_sprite(&sprite_sheet, 456, 0, 16,
+                                      16);  // Fully open mouth (right)
 
-    pacman_sprites[3] = create_sprite(&sprite_sheet, 456 + 16, 16, 16, 16); // Partially open mouth (left)
-    pacman_sprites[4] = create_sprite(&sprite_sheet, 456,      16, 16, 16); // Fully open mouth (left)
+    pacman_sprites[3] = create_sprite(&sprite_sheet, 456 + 16, 16, 16,
+                                      16);  // Partially open mouth (left)
+    pacman_sprites[4] = create_sprite(&sprite_sheet, 456, 16, 16,
+                                      16);  // Fully open mouth (left)
 
-    pacman_sprites[5] = create_sprite(&sprite_sheet, 456 + 16, 32, 16, 16); // Partially open mouth (up)
-    pacman_sprites[6] = create_sprite(&sprite_sheet, 456,      32, 16, 16); // Fully open mouth (up)
+    pacman_sprites[5] = create_sprite(&sprite_sheet, 456 + 16, 32, 16,
+                                      16);  // Partially open mouth (up)
+    pacman_sprites[6] =
+        create_sprite(&sprite_sheet, 456, 32, 16, 16);  // Fully open mouth (up)
 
-    pacman_sprites[7] = create_sprite(&sprite_sheet, 456 + 16, 48, 16, 16); // Partially open mouth (down)
-    pacman_sprites[8] = create_sprite(&sprite_sheet, 456,      48, 16, 16); // Fully open mouth (down)
+    pacman_sprites[7] = create_sprite(&sprite_sheet, 456 + 16, 48, 16,
+                                      16);  // Partially open mouth (down)
+    pacman_sprites[8] = create_sprite(&sprite_sheet, 456, 48, 16,
+                                      16);  // Fully open mouth (down)
 
     pacman_t pacman;
     pacman.direction = LEFT;
     pacman.stage = CLOSED;
-    pacman.position = point(100, 100); 
-    pacman.status = ALIVE;     
-    
+    pacman.position = point(graphics_context->screen_width / 2,
+                            graphics_context->screen_height / 2);
+    pacman.status = ALIVE;
+
     int pacman_last_ticks = last_frame_ticks;
     int pacman_stage_last_ticks = last_frame_ticks;
- 
+
     int maze_height = sizeof(maze_symbols) / sizeof(char*);
     int maze_width = strlen(maze_symbols[0]);
+
+    int maze_sprite_height = maze_height * 8;
+    int maze_sprite_width = maze_width * 8;
+
+    int maze_h_scale = graphics_context->screen_width / maze_sprite_width;
+    int maze_v_scale = graphics_context->screen_height / maze_sprite_height;
+
+    int zoom = MIN(maze_h_scale, maze_v_scale);
     
     maze_t maze;
     int maze_x = 28 * 9;
@@ -313,8 +322,9 @@ game_stage_action_t handle_intro_stage(void) {
         maze.parts[i] = create_sprite(&sprite_sheet, maze_x, maze_y, 8, 8);
         maze_x += 8;
     }
-  
-    sprite_sheet_t total = create_sprite_sheet(graphics_context, "./assets/sprites/sprites.png");
+
+    sprite_sheet_t total =
+        create_sprite_sheet(graphics_context, "./assets/sprites/sprites.png");
 
     sprite_t total_sprite = create_sprite(&total, 0, 0, 680, 248);
 
@@ -323,28 +333,27 @@ game_stage_action_t handle_intro_stage(void) {
 
     sprite_t maze_parts[maze_height][maze_width];
 
-    for (int x=0; x<maze_width; x++) { 
-        for (int y=0; y<maze_height; y++) {
-            maze_parts[y][x] = create_sprite(&total, x*8, y*8, 8, 8);
+    for (int x = 0; x < maze_width; x++) {
+        for (int y = 0; y < maze_height; y++) {
+            maze_parts[y][x] = create_sprite(&total, x * 8, y * 8, 8, 8);
         }
     }
 
     sprite_t pacman_sprite = get_pacman_sprite(pacman.stage, pacman.direction);
-    
+
     while (true) {
-       int delay = (1000 / game->settings.fps) - elapsed_from(last_frame_ticks);
-       if (delay > 0) { 
-        SDL_Delay(delay);
-       }
-        last_frame_ticks = get_clock_ticks_ms(); 
+        int delay =
+            (1000 / game->settings.fps) - elapsed_from(last_frame_ticks);
+        if (delay > 0) {
+            SDL_Delay(delay);
+        }
+        last_frame_ticks = get_clock_ticks_ms();
 
         clear_frame(graphics_context);
-        
-        int zoom = 4;
-      
-        // render_sprite(graphics_context, &total_sprite, 0, 0, 0, zoom); 
-      
-        if (elapsed_from(pacman_last_ticks) > 100) {
+
+        // render_sprite(graphics_context, &total_sprite, 0, 0, 0, zoom);
+
+        if (elapsed_from(pacman_last_ticks) > 30) {
             pacman_sprite = get_pacman_sprite(pacman.stage, pacman.direction);
             switch (pacman.direction) {
                 case UP:
@@ -363,11 +372,11 @@ game_stage_action_t handle_intro_stage(void) {
             pacman_last_ticks = get_clock_ticks_ms();
         }
 
-        if (elapsed_from(pacman_stage_last_ticks) > 200) {
+        if (elapsed_from(pacman_stage_last_ticks) > 15) {
             pacman.stage = next_stage(pacman.stage);
             pacman_stage_last_ticks = get_clock_ticks_ms();
         }
-                  
+
         // int y = 0;
         // int x = 0;
         // for (int i=0; i<29; i++){
@@ -379,7 +388,7 @@ game_stage_action_t handle_intro_stage(void) {
         //   // }
         //   x += 8*zoom;
         // }
-        
+
         // x = 28*8*zoom + 4*zoom;
         // printf("maze x: %d\n", x);
         // for (int i=0; i<29; i++){
@@ -393,9 +402,10 @@ game_stage_action_t handle_intro_stage(void) {
         // }
 
         // for (int i=0; i<100; i++){
-        //   draw_line(graphics_context, 0, i*8*zoom, 5000, i*8*zoom, COLOR(0,255, 255));
+        //   draw_line(graphics_context, 0, i*8*zoom, 5000, i*8*zoom,
+        //   COLOR(0,255, 255));
         // }
-        
+
         // x = 56*8*zoom + 8*zoom;
         // printf("sprites x: %d\n", x);
         // for (int i=0; i<50; i++){
@@ -420,7 +430,7 @@ game_stage_action_t handle_intro_stage(void) {
         //   death_sprites[8] = create_sprite(&total, 456+16*11, 0, 16, 16);
         //   death_sprites[9] = create_sprite(&total, 456+16*12, 0, 16, 16);
         //   death_sprites[10] = create_sprite(&total, 456+16*13, 0, 16, 16);
-        
+
         // if (get_clock_ticks_ms() - death_sprite_ticks > 150) {
         //   death_sprite_index++;
         //   if (death_sprite_index == 11) {
@@ -429,61 +439,147 @@ game_stage_action_t handle_intro_stage(void) {
         //   death_sprite_ticks = get_clock_ticks_ms();
         // }
 
-          //render_sprite(graphics_context, &death_sprites[death_sprite_index], 500, 100, 0, 4);
-          
+        // render_sprite(graphics_context, &death_sprites[death_sprite_index],
+        // 500, 100, 0, 4);
 
-        for (int x=0; x<maze_width; x++) { 
-            for (int y=0; y<maze_height; y++) {
+        for (int x = 0; x < maze_width; x++) {
+            for (int y = 0; y < maze_height; y++) {
                 sprite_t sprite;
                 switch (maze_symbols[y][x]) {
-                    case ' ': continue;
-                    case '.': sprite = maze_parts[1][1]; break;
-                    case '*': sprite = maze_parts[3][1]; break;
-                    case '0': sprite = maze_parts[0][0]; break;
-                    case '1': sprite = maze_parts[0][1]; break;
-                    case '2': sprite = maze_parts[0][13]; break;
-                    case '3': sprite = maze_parts[0][14]; break;
-                    case '4': sprite = maze_parts[0][27]; break;
-                    case '5': sprite = maze_parts[1][0]; break;
-                    case '6': sprite = maze_parts[1][13]; break;
-                    case '7': sprite = maze_parts[1][14]; break;
-                    case '8': sprite = maze_parts[1][27]; break;
-                    case '9': sprite = maze_parts[2][2]; break;
-                    case 'A': sprite = maze_parts[2][3]; break;
-                    case 'B': sprite = maze_parts[2][5]; break;
-                    case 'C': sprite = maze_parts[4][2]; break;
-                    case 'D': sprite = maze_parts[4][3]; break;
-                    case 'E': sprite = maze_parts[4][5]; break;
-                    case 'F': sprite = maze_parts[7][13]; break;
-                    case 'G': sprite = maze_parts[7][14]; break;
-                    case 'H': sprite = maze_parts[9][0]; break;
-                    case 'I': sprite = maze_parts[9][1]; break;
-                    case 'J': sprite = maze_parts[9][5]; break;
-                    case 'K': sprite = maze_parts[9][8]; break;
-                    case 'L': sprite = maze_parts[9][19]; break;
-                    case 'M': sprite = maze_parts[9][22]; break;
-                    case 'N': sprite = maze_parts[9][27]; break;
-                    case 'O': sprite = maze_parts[12][10]; break;
-                    case 'P': sprite = maze_parts[12][11]; break;
-                    case 'Q': sprite = maze_parts[12][13]; break;
-                    case 'R': sprite = maze_parts[12][17]; break;
-                    case 'S': sprite = maze_parts[13][5]; break;
-                    case 'T': sprite = maze_parts[13][22]; break;
-                    case 'U': sprite = maze_parts[16][10]; break;
-                    case 'V': sprite = maze_parts[16][17]; break;
-                    case 'W': sprite = maze_parts[24][0]; break;
-                    case 'X': sprite = maze_parts[24][27]; break;
-                    case 'Y': sprite = maze_parts[25][0]; break;
-                    case 'Z': sprite = maze_parts[25][27]; break;
+                    case ' ':
+                        continue;
+                    case '.':
+                        sprite = maze_parts[1][1];
+                        break;
+                    case '*':
+                        sprite = maze_parts[3][1];
+                        break;
+                    case '0':
+                        sprite = maze_parts[0][0];
+                        break;
+                    case '1':
+                        sprite = maze_parts[0][1];
+                        break;
+                    case '2':
+                        sprite = maze_parts[0][13];
+                        break;
+                    case '3':
+                        sprite = maze_parts[0][14];
+                        break;
+                    case '4':
+                        sprite = maze_parts[0][27];
+                        break;
+                    case '5':
+                        sprite = maze_parts[1][0];
+                        break;
+                    case '6':
+                        sprite = maze_parts[1][13];
+                        break;
+                    case '7':
+                        sprite = maze_parts[1][14];
+                        break;
+                    case '8':
+                        sprite = maze_parts[1][27];
+                        break;
+                    case '9':
+                        sprite = maze_parts[2][2];
+                        break;
+                    case 'A':
+                        sprite = maze_parts[2][3];
+                        break;
+                    case 'B':
+                        sprite = maze_parts[2][5];
+                        break;
+                    case 'C':
+                        sprite = maze_parts[4][2];
+                        break;
+                    case 'D':
+                        sprite = maze_parts[4][3];
+                        break;
+                    case 'E':
+                        sprite = maze_parts[4][5];
+                        break;
+                    case 'F':
+                        sprite = maze_parts[7][13];
+                        break;
+                    case 'G':
+                        sprite = maze_parts[7][14];
+                        break;
+                    case 'H':
+                        sprite = maze_parts[9][0];
+                        break;
+                    case 'I':
+                        sprite = maze_parts[9][1];
+                        break;
+                    case 'J':
+                        sprite = maze_parts[9][5];
+                        break;
+                    case 'K':
+                        sprite = maze_parts[9][8];
+                        break;
+                    case 'L':
+                        sprite = maze_parts[9][19];
+                        break;
+                    case 'M':
+                        sprite = maze_parts[9][22];
+                        break;
+                    case 'N':
+                        sprite = maze_parts[9][27];
+                        break;
+                    case 'O':
+                        sprite = maze_parts[12][10];
+                        break;
+                    case 'P':
+                        sprite = maze_parts[12][11];
+                        break;
+                    case 'Q':
+                        sprite = maze_parts[12][13];
+                        break;
+                    case 'R':
+                        sprite = maze_parts[12][17];
+                        break;
+                    case 'S':
+                        sprite = maze_parts[13][5];
+                        break;
+                    case 'T':
+                        sprite = maze_parts[13][22];
+                        break;
+                    case 'U':
+                        sprite = maze_parts[16][10];
+                        break;
+                    case 'V':
+                        sprite = maze_parts[16][17];
+                        break;
+                    case 'W':
+                        sprite = maze_parts[24][0];
+                        break;
+                    case 'X':
+                        sprite = maze_parts[24][27];
+                        break;
+                    case 'Y':
+                        sprite = maze_parts[25][0];
+                        break;
+                    case 'Z':
+                        sprite = maze_parts[25][27];
+                        break;
                 }
-               render_sprite(graphics_context, &sprite, x*8*zoom, 100+y*8*zoom, 0, zoom);
+                render_sprite(graphics_context, &sprite, x * 8 * zoom,
+                              100 + y * 8 * zoom, 0, zoom);
             }
         }
 
-        render_sprite(graphics_context,
-                      &pacman_sprite,
-                      pacman.position.x, pacman.position.y,
-                      0, zoom);
+        render_sprite(graphics_context, &pacman_sprite, pacman.position.x,
+                      pacman.position.y, 0, zoom);
+
+        draw_rectangle(graphics_context, 2000, 500, 2000 + 16, 500 + 16,
+                       COLOR_RED);
+        draw_rectangle(graphics_context, 2100, 500, 2100 + 16 * 7, 500 + 16 * 7,
+                       COLOR_RED);
+        draw_rectangle(graphics_context, 2000, 600, 2000 + 16 * 10,
+                       600 + 16 * 10, COLOR_RED);
+        render_sprite(graphics_context, &pacman_sprite, 2000, 500, 0.0, 1);
+        render_sprite(graphics_context, &pacman_sprite, 2100, 500, 0.0, 7);
+        render_sprite(graphics_context, &pacman_sprite, 2000, 600, 0.0, 10);
 
         render_frame(graphics_context);
 
@@ -500,19 +596,19 @@ game_stage_action_t handle_intro_stage(void) {
                 }
             }
         }
-        
+
         if (is_up_key_pressed(&game->keyboard_state)) {
             pacman.direction = UP;
         }
- 
+
         if (is_down_key_pressed(&game->keyboard_state)) {
             pacman.direction = DOWN;
         }
- 
+
         if (is_left_key_pressed(&game->keyboard_state)) {
             pacman.direction = LEFT;
         }
- 
+
         if (is_right_key_pressed(&game->keyboard_state)) {
             pacman.direction = RIGHT;
         }
