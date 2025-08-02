@@ -8,6 +8,7 @@
 
 #define SPACE_KEY_TICKS 150
 #define UP_KEY_TICKS 100
+#define DOWN_KEY_TICKS 100
 #define LEFT_RIGHT_KEY_TICKS 15
 #define S_KEY_TICKS 150
 
@@ -16,6 +17,7 @@ keyboard_state_t init_keyboard_state(void) {
   keyboard_state.keys = SDL_GetKeyboardState(NULL);
   keyboard_state.space_key_last_ticks = get_clock_ticks_ms();
   keyboard_state.up_key_last_ticks = get_clock_ticks_ms();
+  keyboard_state.down_key_last_ticks = get_clock_ticks_ms();
   keyboard_state.left_key_last_ticks = get_clock_ticks_ms();
   keyboard_state.right_key_last_ticks = get_clock_ticks_ms();
   keyboard_state.s_key_last_ticks = get_clock_ticks_ms();
@@ -37,6 +39,16 @@ ALWAYS_INLINE bool is_up_key_pressed(const keyboard_state_ptr keyboard_state) {
        keyboard_state->keys[SDL_SCANCODE_K]) &&
       elapsed_from(keyboard_state->up_key_last_ticks) > UP_KEY_TICKS) {
     keyboard_state->up_key_last_ticks = get_clock_ticks_ms();
+    return true;
+  }
+  return false;
+}
+
+ALWAYS_INLINE bool is_down_key_pressed(const keyboard_state_ptr keyboard_state) {
+  if ((keyboard_state->keys[SDL_SCANCODE_DOWN] ||
+       keyboard_state->keys[SDL_SCANCODE_J]) &&
+      elapsed_from(keyboard_state->down_key_last_ticks) > DOWN_KEY_TICKS) {
+    keyboard_state->down_key_last_ticks = get_clock_ticks_ms();
     return true;
   }
   return false;
