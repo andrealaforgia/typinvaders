@@ -15,8 +15,16 @@ typedef struct {
   double y;
 } point_t, *point_ptr, vector_t, *vector_ptr;
 
+typedef struct {
+  point_t top_left;
+  int width;
+  int height;
+} rectangle_t;
+
+
 point_t point(double x, double y);
 vector_t vector(double x, double y);
+rectangle_t rectangle(point_t top_left, int width, int height);
 vector_t points_vector(const point_ptr a, const point_ptr b);
 point_t relative_point(const point_ptr p, const rel_point_ptr rel_p);
 double point_distance(const point_ptr p1, const point_ptr p2);

@@ -19,6 +19,14 @@ ALWAYS_INLINE vector_t vector(double x, double y) {
   return v;
 }
 
+ALWAYS_INLINE rectangle_t rectangle(point_t top_left, int width, int height) {
+  rectangle_t rectangle;
+  rectangle.top_left = top_left;
+  rectangle.width = width;
+  rectangle.height = height;
+  return rectangle;
+}
+
 ALWAYS_INLINE vector_t points_vector(const point_ptr a, const point_ptr b) {
   double angle = atan2(b->y - a->y, b->x - a->x);
   return vector(cos(angle), sin(angle));

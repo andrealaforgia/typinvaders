@@ -33,7 +33,7 @@
 
 #define ASTEROIDS_COUNT 150
 
-#define MIN(a,b) ((a) < (b) ? (a) : (b))
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 static game_ptr game = NULL;
 static graphics_context_ptr graphics_context = NULL;
@@ -314,7 +314,25 @@ game_stage_action_t handle_intro_stage(void) {
     int maze_v_scale = graphics_context->screen_height / maze_sprite_height;
 
     int zoom = MIN(maze_h_scale, maze_v_scale);
+
+    int maze_scaled_width = maze_sprite_width * zoom;
+    int maze_scaled_height = maze_sprite_height * zoom;
+
+    printf("maze scaled width: %d, height: %d\n", maze_scaled_width,
+           maze_scaled_height);
+
+    printf("screen width: %d, height: %d\n",
+           graphics_context->screen_width, graphics_context->screen_height);
     
+    rectangle_t maze_rectangle = rectangle(
+        point(graphics_context->screen_width / 2 - maze_scaled_width / 2,
+              graphics_context->screen_height / 2 - maze_scaled_height / 2),
+        maze_scaled_width, maze_scaled_height);
+
+    printf("maze rectangle: top_left (%f, %f), width: %d, height: %d\n",
+           maze_rectangle.top_left.x, maze_rectangle.top_left.y,
+           maze_rectangle.width, maze_rectangle.height);
+
     maze_t maze;
     int maze_x = 28 * 9;
     int maze_y = 0;
@@ -353,7 +371,7 @@ game_stage_action_t handle_intro_stage(void) {
 
         // render_sprite(graphics_context, &total_sprite, 0, 0, 0, zoom);
 
-        if (elapsed_from(pacman_last_ticks) > 30) {
+        if (elapsed_from(pacman_last_ticks) > 500) {
             pacman_sprite = get_pacman_sprite(pacman.stage, pacman.direction);
             switch (pacman.direction) {
                 case UP:
@@ -372,7 +390,7 @@ game_stage_action_t handle_intro_stage(void) {
             pacman_last_ticks = get_clock_ticks_ms();
         }
 
-        if (elapsed_from(pacman_stage_last_ticks) > 15) {
+        if (elapsed_from(pacman_stage_last_ticks) > 67) {
             pacman.stage = next_stage(pacman.stage);
             pacman_stage_last_ticks = get_clock_ticks_ms();
         }
@@ -563,8 +581,10 @@ game_stage_action_t handle_intro_stage(void) {
                         sprite = maze_parts[25][27];
                         break;
                 }
-                render_sprite(graphics_context, &sprite, x * 8 * zoom,
-                              100 + y * 8 * zoom, 0, zoom);
+                render_sprite(graphics_context, &sprite,
+                              maze_rectangle.top_left.x + x * 8 * zoom,
+                              maze_rectangle.top_left.y + y * 8 * zoom, 0,
+                              zoom);
             }
         }
 
@@ -580,6 +600,9 @@ game_stage_action_t handle_intro_stage(void) {
         render_sprite(graphics_context, &pacman_sprite, 2000, 500, 0.0, 1);
         render_sprite(graphics_context, &pacman_sprite, 2100, 500, 0.0, 7);
         render_sprite(graphics_context, &pacman_sprite, 2000, 600, 0.0, 10);
+
+        draw_rectangle(graphics_context, maze_rectangle.top_left.x, maze_rectangle.top_left.y, maze_rectangle.top_left.x + maze_scaled_width, maze_rectangle.top_left.y + maze_scaled_height, COLOR_RED);
+
 
         render_frame(graphics_context);
 
