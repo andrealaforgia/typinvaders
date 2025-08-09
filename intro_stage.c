@@ -317,22 +317,12 @@ game_stage_action_t handle_intro_stage(void) {
 
     int maze_scaled_width = maze_sprite_width * zoom;
     int maze_scaled_height = maze_sprite_height * zoom;
-
-    printf("maze scaled width: %d, height: %d\n", maze_scaled_width,
-           maze_scaled_height);
-
-    printf("screen width: %d, height: %d\n",
-           graphics_context->screen_width, graphics_context->screen_height);
     
     rectangle_t maze_rectangle = rectangle(
         point(graphics_context->screen_width / 2 - maze_scaled_width / 2,
               graphics_context->screen_height / 2 - maze_scaled_height / 2),
         maze_scaled_width, maze_scaled_height);
-
-    printf("maze rectangle: top_left (%f, %f), width: %d, height: %d\n",
-           maze_rectangle.top_left.x, maze_rectangle.top_left.y,
-           maze_rectangle.width, maze_rectangle.height);
-
+    
     maze_t maze;
     int maze_x = 28 * 9;
     int maze_y = 0;
@@ -590,19 +580,6 @@ game_stage_action_t handle_intro_stage(void) {
 
         render_sprite(graphics_context, &pacman_sprite, pacman.position.x,
                       pacman.position.y, 0, zoom);
-
-        draw_rectangle(graphics_context, 2000, 500, 2000 + 16, 500 + 16,
-                       COLOR_RED);
-        draw_rectangle(graphics_context, 2100, 500, 2100 + 16 * 7, 500 + 16 * 7,
-                       COLOR_RED);
-        draw_rectangle(graphics_context, 2000, 600, 2000 + 16 * 10,
-                       600 + 16 * 10, COLOR_RED);
-        render_sprite(graphics_context, &pacman_sprite, 2000, 500, 0.0, 1);
-        render_sprite(graphics_context, &pacman_sprite, 2100, 500, 0.0, 7);
-        render_sprite(graphics_context, &pacman_sprite, 2000, 600, 0.0, 10);
-
-        draw_rectangle(graphics_context, maze_rectangle.top_left.x, maze_rectangle.top_left.y, maze_rectangle.top_left.x + maze_scaled_width, maze_rectangle.top_left.y + maze_scaled_height, COLOR_RED);
-
 
         render_frame(graphics_context);
 
