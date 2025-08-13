@@ -9,7 +9,7 @@
 static int get_display_count(void) {
     int count = SDL_GetNumVideoDisplays();
     if (count < 0) {
-        SDL_Log("SDL_GetNumVideoDisplays failed: %s", SDL_GetError());
+        fprintf(stderr, "SDL_GetNumVideoDisplays failed: %s\n", SDL_GetError());
         return 0;
     }
     return count;
@@ -19,22 +19,30 @@ static SDL_DisplayMode *get_display_modes(int display_index,
                                           int *p_display_mode_count) {
     *p_display_mode_count = SDL_GetNumDisplayModes(display_index);
     if (*p_display_mode_count < 0) {
-        SDL_Log("SDL_GetNumDisplayModes failed: %s", SDL_GetError());
+        fprintf(stderr, "SDL_GetNumDisplayModes failed: %s\n", SDL_GetError());
         *p_display_mode_count = 0;
         return NULL;
     }
     if (*p_display_mode_count == 0) {
-        SDL_Log("No display modes available for display %d", display_index);
+        fprintf(stderr,
+                "No display modes available for display %d\n",
+                display_index);
         return NULL;
     }
 
     SDL_DisplayMode *display_modes =
         calloc(*p_display_mode_count, sizeof(SDL_DisplayMode));
+    if (!display_modes) {
+        fprintf(stderr, "Failed to allocate memory for display modes\n");
+        *p_display_mode_count = 0;
+        return NULL;
+    }
 
     for (int i = 0; i < *p_display_mode_count; i++) {
         if (SDL_GetDisplayMode(display_index, i, &display_modes[i]) != 0) {
-            SDL_Log("SDL_GetDisplayMode failed: %s", SDL_GetError());
+            fprintf(stderr, "SDL_GetDisplayMode failed: %s\n", SDL_GetError());
             free(display_modes);
+            *p_display_mode_count = 0;
             return NULL;
         }
     }
@@ -42,32 +50,65 @@ static SDL_DisplayMode *get_display_modes(int display_index,
 }
 
 void print_graphics_info(void) {
-    SDL_Init(SDL_INIT_EVERYTHING);
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        fprintf(stderr, "SDL Init Error: %s\n", SDL_GetError());
+        return;
+    }
+
     int display_count = get_display_count();
-    SDL_Log("Number of available displays: %d\n", display_count);
+    fprintf(stderr, "Number of available displays: %d\n", display_count);
 
     if (display_count == 0) {
-        SDL_Log("No displays available - running in headless environment\n");
+        fprintf(stderr,
+                "No displays available - running in headless environment\n");
         SDL_Quit();
         return;
     }
 
+    // Test if we can actually create a window (some headless environments
+    // report displays but can't create windows)
+    SDL_Window *test_window = SDL_CreateWindow("Test",
+                                               SDL_WINDOWPOS_UNDEFINED,
+                                               SDL_WINDOWPOS_UNDEFINED,
+                                               100,
+                                               100,
+                                               SDL_WINDOW_HIDDEN);
+    if (!test_window) {
+        fprintf(
+            stderr,
+            "Cannot create test window - running in headless environment: %s\n",
+            SDL_GetError());
+        SDL_Quit();
+        return;
+    }
+    SDL_DestroyWindow(test_window);
+
     for (int display_index = 0; display_index < display_count;
          display_index++) {
-        SDL_Log("Display Index: %d\n", display_index);
+        fprintf(stderr, "Display Index: %d\n", display_index);
         int display_mode_count;
         SDL_DisplayMode *display_modes =
             get_display_modes(display_index, &display_mode_count);
         if (display_modes) {
             for (int dm = 0; dm < display_mode_count; dm++) {
-                SDL_Log("Display Mode %d\tbpp %d\t%s\t%d x %d",
+                const char *format_name =
+                    SDL_GetPixelFormatName(display_modes[dm].format);
+                if (!format_name) {
+                    format_name = "Unknown";
+                }
+                fprintf(stderr,
+                        "Display Mode %d\tbpp %d\t%s\t%d x %d\n",
                         dm,
                         SDL_BITSPERPIXEL(display_modes[dm].format),
-                        SDL_GetPixelFormatName(display_modes[dm].format),
+                        format_name,
                         display_modes[dm].w,
                         display_modes[dm].h);
             }
             free(display_modes);
+        } else {
+            fprintf(stderr,
+                    "Failed to get display modes for display %d\n",
+                    display_index);
         }
     }
     SDL_Quit();
