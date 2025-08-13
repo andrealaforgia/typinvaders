@@ -9,11 +9,11 @@
 #include "window_mode.h"
 
 typedef struct {
-    SDL_Window *window;
-    SDL_Renderer *renderer;
-    int screen_width;
-    int screen_height;
-    point_t screen_center;
+  SDL_Window *window;
+  SDL_Renderer *renderer;
+  int screen_width;
+  int screen_height;
+  point_t screen_center;
 } graphics_context_t, *graphics_context_ptr;
 
 void print_graphics_info(void);

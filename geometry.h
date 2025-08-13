@@ -21,7 +21,6 @@ typedef struct {
   int height;
 } rectangle_t;
 
-
 point_t point(double x, double y);
 vector_t vector(double x, double y);
 rectangle_t rectangle(point_t top_left, int width, int height);
