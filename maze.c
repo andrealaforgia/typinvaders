@@ -55,11 +55,17 @@ maze_t create_maze(const sprite_sheet_ptr sprite_sheet) {
 }
 
 void render_maze(const graphics_context_ptr graphics_context,
-                 const maze_t *maze,
+                 const maze_ptr maze,
                  const rectangle_t maze_rectangle,
                  int zoom) {
     int maze_width = strlen(maze_symbols[0]);
     int maze_height = sizeof(maze_symbols) / sizeof(char *);
+
+    for (int x = 0; x < maze_width; x++) {
+        for (int y = 0; y < maze_height; y++) {
+            maze_parts[y][x] = create_sprite(&total, x * 8, y * 8, 8, 8);
+        }
+    }
 
     for (int x = 0; x < maze_width; x++) {
         for (int y = 0; y < maze_height; y++) {
@@ -68,118 +74,118 @@ void render_maze(const graphics_context_ptr graphics_context,
             case ' ':
                 continue;
             case '.':
-                sprite = maze->parts[1];
+                sprite = maze_parts[1][1];
                 break;
             case '*':
-                sprite = maze->parts[3];
+                sprite = maze_parts[3][1];
                 break;
             case '0':
-                sprite = maze->parts[0];
+                sprite = maze_parts[0][0];
                 break;
             case '1':
-                sprite = maze->parts[1];
+                sprite = maze_parts[0][1];
                 break;
             case '2':
-                sprite = maze->parts[13];
+                sprite = maze_parts[0][13];
                 break;
             case '3':
-                sprite = maze->parts[14];
+                sprite = maze_parts[0][14];
                 break;
             case '4':
-                sprite = maze->parts[27];
+                sprite = maze_parts[0][27];
                 break;
             case '5':
-                sprite = maze->parts[0];
+                sprite = maze_parts[1][0];
                 break;
             case '6':
-                sprite = maze->parts[13];
+                sprite = maze_parts[1][13];
                 break;
             case '7':
-                sprite = maze->parts[14];
+                sprite = maze_parts[1][14];
                 break;
             case '8':
-                sprite = maze->parts[27];
+                sprite = maze_parts[1][27];
                 break;
             case '9':
-                sprite = maze->parts[2];
+                sprite = maze_parts[2][2];
                 break;
             case 'A':
-                sprite = maze->parts[3];
+                sprite = maze_parts[2][3];
                 break;
             case 'B':
-                sprite = maze->parts[5];
+                sprite = maze_parts[2][5];
                 break;
             case 'C':
-                sprite = maze->parts[4];
+                sprite = maze_parts[4][2];
                 break;
             case 'D':
-                sprite = maze->parts[3];
+                sprite = maze_parts[4][3];
                 break;
             case 'E':
-                sprite = maze->parts[5];
+                sprite = maze_parts[4][5];
                 break;
             case 'F':
-                sprite = maze->parts[7];
+                sprite = maze_parts[7][13];
                 break;
             case 'G':
-                sprite = maze->parts[14];
+                sprite = maze_parts[7][14];
                 break;
             case 'H':
-                sprite = maze->parts[9];
+                sprite = maze_parts[9][0];
                 break;
             case 'I':
-                sprite = maze->parts[1];
+                sprite = maze_parts[9][1];
                 break;
             case 'J':
-                sprite = maze->parts[5];
+                sprite = maze_parts[9][5];
                 break;
             case 'K':
-                sprite = maze->parts[8];
+                sprite = maze_parts[9][8];
                 break;
             case 'L':
-                sprite = maze->parts[19];
+                sprite = maze_parts[9][19];
                 break;
             case 'M':
-                sprite = maze->parts[22];
+                sprite = maze_parts[9][22];
                 break;
             case 'N':
-                sprite = maze->parts[27];
+                sprite = maze_parts[9][27];
                 break;
             case 'O':
-                sprite = maze->parts[10];
+                sprite = maze_parts[12][10];
                 break;
             case 'P':
-                sprite = maze->parts[11];
+                sprite = maze_parts[12][11];
                 break;
             case 'Q':
-                sprite = maze->parts[13];
+                sprite = maze_parts[12][13];
                 break;
             case 'R':
-                sprite = maze->parts[17];
+                sprite = maze_parts[12][17];
                 break;
             case 'S':
-                sprite = maze->parts[5];
+                sprite = maze_parts[13][5];
                 break;
             case 'T':
-                sprite = maze->parts[22];
+                sprite = maze_parts[13][22];
                 break;
             case 'U':
-                sprite = maze->parts[10];
+                sprite = maze_parts[16][10];
                 break;
             case 'V':
-                sprite = maze->parts[17];
+                sprite = maze_parts[16][17];
                 break;
             case 'W':
-                sprite = maze->parts[0];
+                sprite = maze_parts[24][0];
                 break;
             case 'X':
-                sprite = maze->parts[27];
+                sprite = maze_parts[24][27];
                 break;
             case 'Y':
-                sprite = maze->parts[0];
+                sprite = maze_parts[25][0];
                 break;
             case 'Z':
-                sprite = maze->parts[27];
+                sprite = maze_parts[25][27];
                 break;
             }
             render_sprite(graphics_context,
