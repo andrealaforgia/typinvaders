@@ -8,7 +8,6 @@
 #include "hash_map.h"
 #include "inline.h"
 #include "saucer.h"
-#include "sharpnel.h"
 #include "ship.h"
 #include "sprite.h"
 #include "text.h"

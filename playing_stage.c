@@ -21,7 +21,6 @@
 #include "render.h"
 #include "saucer.h"
 #include "score.h"
-#include "sharpnel.h"
 #include "sprite.h"
 #include "text.h"
 static game_ptr game = NULL;
@@ -92,7 +91,7 @@ static ALWAYS_INLINE void update_ship(void) {
 }
 
 static ALWAYS_INLINE void handle_ship_destruction(void) {
-    add_sharpnel(ship.position);
+    // add_sharpnel(ship.position);
     play_bang_small_if_sound_on();
     destroy_ship(&ship);
 }
@@ -151,7 +150,7 @@ static ALWAYS_INLINE int asteroid_radius(size_t asteroid_index) {
 
 static ALWAYS_INLINE void break_asteroid_apart(size_t asteroid_index) {
     asteroid_ptr asteroid = &asteroids[asteroid_index];
-    add_sharpnel(asteroid->position);
+    // add_sharpnel(asteroid->position);
     switch (asteroid->scale) {
     case LARGE_ASTEROID_SCALE: {
         play_bang_large_if_sound_on();
@@ -314,7 +313,7 @@ static ALWAYS_INLINE void update_saucer(void) {
 
 static ALWAYS_INLINE void destroy_saucer(void) {
     saucer.flying = false;
-    add_sharpnel(saucer.position);
+    // add_sharpnel(saucer.position);
     if (is_big(&saucer)) {
         play_bang_large_if_sound_on();
     } else {
@@ -499,7 +498,7 @@ static ALWAYS_INLINE void recreate_asteroids_if_none_are_left(void) {
 
 static ALWAYS_INLINE void reset_objects(void) {
     asteroid_count = 0;
-    reset_sharpnels();
+    // reset_sharpnels();
     saucer_bullet_count = 0;
     ship_bullet_count = 0;
     saucer.flying = false;
@@ -563,7 +562,7 @@ game_stage_action_t handle_playing_stage(void) {
 
         animate_saucer_bullets();
 
-        animate_sharpnels(graphics_context);
+        // animate_sharpnels(graphics_context);
 
         show_lives();
 
