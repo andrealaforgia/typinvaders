@@ -1,9 +1,10 @@
 #include "physics.h"
 
+#include <math.h>
+#include <stdlib.h>
+
 #include "geometry.h"
 #include "inline.h"
-#include "math.h"
-#include "stdlib.h"
 
 ALWAYS_INLINE velocity_t velocity(const double speed,
                                   const vector_t direction) {
