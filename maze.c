@@ -211,7 +211,7 @@ int calculate_maze_zoom(const graphics_context_ptr graphics_context) {
 }
 
 rectangle_t create_maze_rectangle(const graphics_context_ptr graphics_context,
-                                 int zoom) {
+                                  int zoom) {
     int maze_width, maze_height;
     get_maze_dimensions(&maze_width, &maze_height);
 

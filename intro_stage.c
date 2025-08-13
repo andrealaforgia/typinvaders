@@ -11,12 +11,12 @@
 #include "events.h"
 #include "font.h"
 #include "frame.h"
-#include "maze.h"
 #include "game.h"
 #include "geometry.h"
 #include "graphics.h"
 #include "hash_map.h"
 #include "keyboard.h"
+#include "maze.h"
 #include "physics.h"
 #include "render.h"
 #include "saucer.h"
@@ -35,8 +35,6 @@
 
 #define ASTEROIDS_COUNT 150
 
-
-
 static game_ptr game = NULL;
 static graphics_context_ptr graphics_context = NULL;
 
@@ -44,10 +42,6 @@ void init_intro_stage(const game_ptr _game) {
     game = _game;
     graphics_context = &game->graphics_context;
 }
-
-
-
-
 
 typedef struct rendered_sprite_t {
     sprite_t sprite;
@@ -208,8 +202,6 @@ game_stage_action_t handle_intro_stage(void) {
 
     int death_sprite_ticks = get_clock_ticks_ms();
     int death_sprite_index = 0;
-
-
 
     sprite_t pacman_sprite = get_pacman_sprite(pacman.stage, pacman.direction);
 
