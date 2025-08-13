@@ -188,17 +188,6 @@ pacman_stage_t next_stage(pacman_stage_t current_stage) {
 }
 
 game_stage_action_t handle_intro_stage(void) {
-    int last_action_text_ticks = get_clock_ticks_ms();
-
-    bool is_action_text_on = true;
-
-    asteroid_t asteroids[ASTEROIDS_COUNT];
-    for (int i = 0; i < ASTEROIDS_COUNT; i++) {
-        asteroids[i] = create_asteroid(random_point(graphics_context),
-                                       random_asteroid_scale(),
-                                       random_color());
-    }
-
     int last_frame_ticks = get_clock_ticks_ms();
 
     sprite_sheet_t font_sprite_sheet =
