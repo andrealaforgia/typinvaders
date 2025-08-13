@@ -38,91 +38,11 @@
 static game_ptr game = NULL;
 static graphics_context_ptr graphics_context = NULL;
 
-static int title_text_scale;
-static text_dimensions_t title_text_dimensions;
-static point_t title_text_position;
-
-static int instructions_text_scale;
-static text_dimensions_t instructions_text_dimensions;
-static point_t instructions_text_0_position;
-static point_t instructions_text_1_position;
-static point_t instructions_text_2_position;
-static point_t instructions_text_3_position;
-static point_t instructions_text_4_position;
-
-static int action_text_scale;
-static text_dimensions_t action_text_dimensions;
-static point_t action_text_position;
-
-static text_dimensions_t copyright_text_dimensions;
-static int copyright_text_scale;
-
 static sprite_t font[256] = { 0 };
 
 void init_intro_stage(const game_ptr _game) {
     game = _game;
     graphics_context = &game->graphics_context;
-
-    title_text_scale = (graphics_context->screen_height * 25) / 900;
-    title_text_dimensions =
-        calculate_text_dimensions(TITLE_TEXT, title_text_scale);
-    title_text_position = point(graphics_context->screen_center.x -
-                                    title_text_dimensions.width / 2,
-                                graphics_context->screen_center.y -
-                                    graphics_context->screen_height / 3);
-
-    action_text_scale = (graphics_context->screen_height * 10) / 900;
-    action_text_dimensions =
-        calculate_text_dimensions(ACTION_TEXT, action_text_scale);
-    action_text_position = point(graphics_context->screen_center.x -
-                                     action_text_dimensions.width / 2,
-                                 graphics_context->screen_center.y +
-                                     graphics_context->screen_height / 6);
-
-    instructions_text_scale = (graphics_context->screen_height * 10) / 900;
-    instructions_text_dimensions =
-        calculate_text_dimensions(INSTRUCTIONS_TEXT_0, instructions_text_scale);
-    instructions_text_0_position =
-        point(graphics_context->screen_center.x -
-                  instructions_text_dimensions.width / 2,
-              graphics_context->screen_center.y -
-                  graphics_context->screen_height / 4);
-
-    instructions_text_1_position =
-        point(graphics_context->screen_center.x -
-                  instructions_text_dimensions.width / 2,
-              graphics_context->screen_center.y -
-                  graphics_context->screen_height / 4 +
-                  instructions_text_dimensions.height +
-                  instructions_text_dimensions.height / 2);
-
-    instructions_text_2_position =
-        point(graphics_context->screen_center.x -
-                  instructions_text_dimensions.width / 2,
-              graphics_context->screen_center.y -
-                  graphics_context->screen_height / 4 +
-                  instructions_text_dimensions.height * 2 +
-                  2 * instructions_text_dimensions.height / 2);
-
-    instructions_text_3_position =
-        point(graphics_context->screen_center.x -
-                  instructions_text_dimensions.width / 2,
-              graphics_context->screen_center.y -
-                  graphics_context->screen_height / 4 +
-                  instructions_text_dimensions.height * 3 +
-                  3 * instructions_text_dimensions.height / 2);
-
-    instructions_text_4_position =
-        point(graphics_context->screen_center.x -
-                  instructions_text_dimensions.width / 2,
-              graphics_context->screen_center.y -
-                  graphics_context->screen_height / 4 +
-                  instructions_text_dimensions.height * 4 +
-                  4 * instructions_text_dimensions.height / 2);
-
-    copyright_text_scale = (graphics_context->screen_height * 5) / 900;
-    copyright_text_dimensions =
-        calculate_text_dimensions(COPYRIGHT_TEXT, copyright_text_scale);
 }
 
 void load_font_from_sprite_sheet(const sprite_sheet_ptr sprite_sheet) {
