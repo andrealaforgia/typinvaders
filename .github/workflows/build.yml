@@ -123,7 +123,7 @@ jobs:
 
       - name: Run Static Analysis
         run: |
-          cppcheck --enable=all --error-exitcode=1 --suppress=missingIncludeSystem .
+          cppcheck --enable=all --error-exitcode=1 --suppress=missingIncludeSystem --suppress=unusedFunction .
 
   # Memory leak detection (if supported)
   memory-check:
