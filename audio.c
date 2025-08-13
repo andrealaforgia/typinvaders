@@ -31,20 +31,63 @@
 
 audio_context_t init_audio_context(void) {
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0) {
-        fprintf(stderr, "Cannot initialize audio!\n");
+        fprintf(stderr, "Cannot initialize audio: %s\n", Mix_GetError());
+        // Return empty context or handle error
     }
     audio_context_t audio_context;
     audio_context.chunks[BANG_LARGE_INDEX] = Mix_LoadWAV(BANG_LARGE_WAV);
+    if (!audio_context.chunks[BANG_LARGE_INDEX]) {
+        fprintf(
+            stderr, "Failed to load %s: %s\n", BANG_LARGE_WAV, Mix_GetError());
+    }
     audio_context.chunks[BANG_MEDIUM_INDEX] = Mix_LoadWAV(BANG_MEDIUM_WAV);
+    if (!audio_context.chunks[BANG_MEDIUM_INDEX]) {
+        fprintf(
+            stderr, "Failed to load %s: %s\n", BANG_MEDIUM_WAV, Mix_GetError());
+    }
     audio_context.chunks[BANG_SMALL_INDEX] = Mix_LoadWAV(BANG_SMALL_WAV);
+    if (!audio_context.chunks[BANG_SMALL_INDEX]) {
+        fprintf(
+            stderr, "Failed to load %s: %s\n", BANG_SMALL_WAV, Mix_GetError());
+    }
     audio_context.chunks[BEAT1_INDEX] = Mix_LoadWAV(BEAT1_WAV);
+    if (!audio_context.chunks[BEAT1_INDEX]) {
+        fprintf(stderr, "Failed to load %s: %s\n", BEAT1_WAV, Mix_GetError());
+    }
     audio_context.chunks[BEAT2_INDEX] = Mix_LoadWAV(BEAT2_WAV);
+    if (!audio_context.chunks[BEAT2_INDEX]) {
+        fprintf(stderr, "Failed to load %s: %s\n", BEAT2_WAV, Mix_GetError());
+    }
     audio_context.chunks[EXTRA_SHIP_INDEX] = Mix_LoadWAV(EXTRA_SHIP_WAV);
+    if (!audio_context.chunks[EXTRA_SHIP_INDEX]) {
+        fprintf(
+            stderr, "Failed to load %s: %s\n", EXTRA_SHIP_WAV, Mix_GetError());
+    }
     audio_context.chunks[FIRE_INDEX] = Mix_LoadWAV(FIRE_WAV);
+    if (!audio_context.chunks[FIRE_INDEX]) {
+        fprintf(stderr, "Failed to load %s: %s\n", FIRE_WAV, Mix_GetError());
+    }
     audio_context.chunks[SAUCER_BIG_INDEX] = Mix_LoadWAV(SAUCER_BIG_WAV);
+    if (!audio_context.chunks[SAUCER_BIG_INDEX]) {
+        fprintf(
+            stderr, "Failed to load %s: %s\n", SAUCER_BIG_WAV, Mix_GetError());
+    }
     audio_context.chunks[SAUCER_SMALL_INDEX] = Mix_LoadWAV(SAUCER_SMALL_WAV);
+    if (!audio_context.chunks[SAUCER_SMALL_INDEX]) {
+        fprintf(stderr,
+                "Failed to load %s: %s\n",
+                SAUCER_SMALL_WAV,
+                Mix_GetError());
+    }
     audio_context.chunks[THRUST_INDEX] = Mix_LoadWAV(THRUST_WAV);
+    if (!audio_context.chunks[THRUST_INDEX]) {
+        fprintf(stderr, "Failed to load %s: %s\n", THRUST_WAV, Mix_GetError());
+    }
     audio_context.chunks[GAME_OVER_INDEX] = Mix_LoadWAV(GAME_OVER_WAV);
+    if (!audio_context.chunks[GAME_OVER_INDEX]) {
+        fprintf(
+            stderr, "Failed to load %s: %s\n", GAME_OVER_WAV, Mix_GetError());
+    }
 
     // Amount of channels (Max amount of sounds playing at the same time)
     Mix_AllocateChannels(256);

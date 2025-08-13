@@ -12,6 +12,18 @@ sprite_sheet_t create_sprite_sheet(const graphics_context_ptr graphics_context,
                                    const char *texture_path) {
     sprite_sheet_t sprite_sheet;
 
+    // Initialize SDL_image if not already done
+    static int img_initialized = 0;
+    if (!img_initialized) {
+        if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+            fprintf(stderr,
+                    "SDL_image initialization failed: %s\n",
+                    IMG_GetError());
+            exit(EXIT_FAILURE);
+        }
+        img_initialized = 1;
+    }
+
     SDL_Surface *surface = IMG_Load(texture_path);
     if (!surface) {
         fprintf(stderr, "Failed to load image: %s\n", IMG_GetError());
