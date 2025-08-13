@@ -5,4 +5,13 @@ Cpp11BracedListStyle: true
 AllowShortBracedListsOnASingleLine: false
 BinPackArguments: false
 BinPackParameters: false
+# Ensure at least two spaces between code and comments
+AlignTrailingComments: true
+ReflowComments: true
+# Minimum spacing between code and comments
+ColumnLimit: 80
+# Ensure proper spacing around comments
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyParentheses: false
+SpacesBeforeTrailingComments: 2
 

@@ -107,88 +107,107 @@ const bounds_t ASTEROID_BOUNDS[] = {{0, 11}, {11, 24}, {24, 36}, {36, 49}};
 
 const bounds_t SAUCER_BOUNDS = {69, 81};
 
-render_context_t create_render_context(
-    const graphics_context_ptr graphics_context) {
-  render_context_t render_context;
-  render_context.graphics_context = graphics_context;
-  render_context.sprite_map = create_hash_map();
-  return render_context;
+render_context_t
+create_render_context(const graphics_context_ptr graphics_context) {
+    render_context_t render_context;
+    render_context.graphics_context = graphics_context;
+    render_context.sprite_map = create_hash_map();
+    return render_context;
 }
 
 ALWAYS_INLINE void render_object(const graphics_context_ptr graphics_context,
-                                 bounds_t bounds, const point_ptr position,
-                                 int scale, int color) {
-  int cx = position->x;
-  int cy = position->y;
-  for (int i = bounds.lower; i < bounds.upper; i++) {
-    int nx = cx + (OBJECT_COORDS[i].x_delta * scale);
-    int ny = cy - (OBJECT_COORDS[i].y_delta * scale);
-    if (OBJECT_COORDS[i].brightness > 0) {
-      draw_line(graphics_context, cx, cy, nx, ny, color);
+                                 bounds_t bounds,
+                                 const point_ptr position,
+                                 int scale,
+                                 int color) {
+    int cx = position->x;
+    int cy = position->y;
+    for (int i = bounds.lower; i < bounds.upper; i++) {
+        int nx = cx + (OBJECT_COORDS[i].x_delta * scale);
+        int ny = cy - (OBJECT_COORDS[i].y_delta * scale);
+        if (OBJECT_COORDS[i].brightness > 0) {
+            draw_line(graphics_context, cx, cy, nx, ny, color);
+        }
+        cx = nx;
+        cy = ny;
     }
-    cx = nx;
-    cy = ny;
-  }
 }
 
 ALWAYS_INLINE void render_asteroid(const graphics_context_ptr graphics_context,
                                    const asteroid_ptr asteroid) {
-  render_object(graphics_context, ASTEROID_BOUNDS[asteroid->type],
-                &asteroid->position, asteroid->scale, asteroid->color);
+    render_object(graphics_context,
+                  ASTEROID_BOUNDS[asteroid->type],
+                  &asteroid->position,
+                  asteroid->scale,
+                  asteroid->color);
 }
 
 ALWAYS_INLINE void render_saucer(const graphics_context_ptr graphics_context,
                                  const saucer_ptr saucer) {
-  render_object(graphics_context, SAUCER_BOUNDS, &saucer->position,
-                saucer->scale, COLOR_RED);
+    render_object(graphics_context,
+                  SAUCER_BOUNDS,
+                  &saucer->position,
+                  saucer->scale,
+                  COLOR_RED);
 }
 
 ALWAYS_INLINE void _render_ship(const render_context_ptr render_context,
                                 const int ship_rotation_index,
                                 const int ship_scale,
                                 const point_ptr ship_position,
-                                const bool thrusting, color_t ship_color) {
-  /*point_t points[NUMBER_OF_POINTS];
-  create_ship_points(ship_rotation_index, ship_scale, ship_position, points);
-  int number_of_points = thrusting ? NUMBER_OF_POINTS : NUMBER_OF_POINTS - 2;
-  for (int i = 0; i < number_of_points; i++) {
-    int j = i == number_of_points - 1 ? 0 : i + 1;
-    draw_line_between_points(graphics_context, &points[i], &points[j],
-                             ship_color);
-  }*/
-  // sprite_ptr sprite = get(&render_context->sprite_map, "ship");
-  // render_sprite(render_context->graphics_context, sprite, ship_position->x,
-  //               ship_position->y, 0.0);
+                                const bool thrusting,
+                                color_t ship_color) {
+    /*point_t points[NUMBER_OF_POINTS];
+    create_ship_points(ship_rotation_index, ship_scale, ship_position, points);
+    int number_of_points = thrusting ? NUMBER_OF_POINTS : NUMBER_OF_POINTS - 2;
+    for (int i = 0; i < number_of_points; i++) {
+      int j = i == number_of_points - 1 ? 0 : i + 1;
+      draw_line_between_points(graphics_context, &points[i], &points[j],
+                               ship_color);
+    }*/
+    // sprite_ptr sprite = get(&render_context->sprite_map, "ship");
+    // render_sprite(render_context->graphics_context, sprite, ship_position->x,
+    //               ship_position->y, 0.0);
 }
 
 ALWAYS_INLINE
 void render_ship(const render_context_ptr render_context, const ship_ptr ship) {
-  _render_ship(render_context, ship->rotation_index, ship->scale,
-               &ship->position, ship->thrusting, COLOR_WHITE);
+    _render_ship(render_context,
+                 ship->rotation_index,
+                 ship->scale,
+                 &ship->position,
+                 ship->thrusting,
+                 COLOR_WHITE);
 }
 
-ALWAYS_INLINE void render_destroyed_ship(
-    const graphics_context_ptr graphics_context, const ship_ptr ship,
-    const color_t color, int scale) {
-  point_t points[NUMBER_OF_POINTS];
-  create_ship_points(ship->rotation_index, scale, &ship->position, points);
-  for (int i = 2; i <= 4; i++) {
-    int j = (i + 1) > 4 ? 2 : i + 1;
-    draw_line(graphics_context, points[i].x + rand() % 10 + 5,
-              points[i].y + rand() % 10 + 5, points[j].x + rand() % 10 + 5,
-              points[j].y + rand() % 10 + 5, color);
-  }
+ALWAYS_INLINE void
+render_destroyed_ship(const graphics_context_ptr graphics_context,
+                      const ship_ptr ship,
+                      const color_t color,
+                      int scale) {
+    point_t points[NUMBER_OF_POINTS];
+    create_ship_points(ship->rotation_index, scale, &ship->position, points);
+    for (int i = 2; i <= 4; i++) {
+        int j = (i + 1) > 4 ? 2 : i + 1;
+        draw_line(graphics_context,
+                  points[i].x + rand() % 10 + 5,
+                  points[i].y + rand() % 10 + 5,
+                  points[j].x + rand() % 10 + 5,
+                  points[j].y + rand() % 10 + 5,
+                  color);
+    }
 }
 
 ALWAYS_INLINE void render_lives(const graphics_context_ptr graphics_context,
-                                point_t position, const int lives) {
-  for (int i = 0; i < lives; i++) {
-    //_render_ship(graphics_context, 0, 1, &position, 0, COLOR_WHITE);
-    position.x -= 20;
-  }
+                                point_t position,
+                                const int lives) {
+    for (int i = 0; i < lives; i++) {
+        position.x -= 20;
+    }
 }
 
 ALWAYS_INLINE void render_bullet(const graphics_context_ptr graphics_context,
-                                 const bullet_ptr bullet, color_t color) {
-  draw_fat_pixel(graphics_context, &bullet->position, color);
+                                 const bullet_ptr bullet,
+                                 color_t color) {
+    draw_fat_pixel(graphics_context, &bullet->position, color);
 }

@@ -249,12 +249,12 @@ sprite_t get_pacman_sprite(pacman_stage_t stage, direction_t dir) {
     }
 
     if (stage == OPENING || stage == CLOSING) {
-        return pacman_sprites[base_index]; // partially open
+        return pacman_sprites[base_index];  // partially open
     } else if (stage == OPEN) {
-        return pacman_sprites[base_index + 1]; // fully open
+        return pacman_sprites[base_index + 1];  // fully open
     }
 
-    return pacman_sprites[0]; // fallback
+    return pacman_sprites[0];  // fallback
 }
 
 pacman_stage_t next_stage(pacman_stage_t current_stage) {
@@ -268,7 +268,7 @@ pacman_stage_t next_stage(pacman_stage_t current_stage) {
     case CLOSING:
         return CLOSED;
     default:
-        return CLOSED; // fallback in case of invalid input
+        return CLOSED;  // fallback in case of invalid input
     }
 }
 
@@ -294,48 +294,48 @@ game_stage_action_t handle_intro_stage(void) {
         create_sprite_sheet(graphics_context, "./assets/sprites/sprites.png");
 
     pacman_sprites[0] =
-        create_sprite(&sprite_sheet, 456 + 32, 0, 16, 16); // Closed mouth
+        create_sprite(&sprite_sheet, 456 + 32, 0, 16, 16);  // Closed mouth
 
     pacman_sprites[1] = create_sprite(&sprite_sheet,
                                       456 + 16,
                                       0,
                                       16,
-                                      16); // Partially open mouth (right)
+                                      16);  // Partially open mouth (right)
     pacman_sprites[2] = create_sprite(&sprite_sheet,
                                       456,
                                       0,
                                       16,
-                                      16); // Fully open mouth (right)
+                                      16);  // Fully open mouth (right)
 
     pacman_sprites[3] = create_sprite(&sprite_sheet,
                                       456 + 16,
                                       16,
                                       16,
-                                      16); // Partially open mouth (left)
+                                      16);  // Partially open mouth (left)
     pacman_sprites[4] = create_sprite(&sprite_sheet,
                                       456,
                                       16,
                                       16,
-                                      16); // Fully open mouth (left)
+                                      16);  // Fully open mouth (left)
 
     pacman_sprites[5] = create_sprite(&sprite_sheet,
                                       456 + 16,
                                       32,
                                       16,
-                                      16); // Partially open mouth (up)
+                                      16);  // Partially open mouth (up)
     pacman_sprites[6] =
-        create_sprite(&sprite_sheet, 456, 32, 16, 16); // Fully open mouth (up)
+        create_sprite(&sprite_sheet, 456, 32, 16, 16);  // Fully open mouth (up)
 
     pacman_sprites[7] = create_sprite(&sprite_sheet,
                                       456 + 16,
                                       48,
                                       16,
-                                      16); // Partially open mouth (down)
+                                      16);  // Partially open mouth (down)
     pacman_sprites[8] = create_sprite(&sprite_sheet,
                                       456,
                                       48,
                                       16,
-                                      16); // Fully open mouth (down)
+                                      16);  // Fully open mouth (down)
 
     pacman_t pacman;
     pacman.direction = LEFT;
