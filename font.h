@@ -1,5 +1,5 @@
-#ifndef FONT_H
-#define FONT_H
+#ifndef FONT_H_
+#define FONT_H_
 
 #include "graphics.h"
 #include "sprite.h"
@@ -24,4 +24,4 @@ void write(const graphics_context_ptr graphics_context,
            int y,
            int zoom);
 
-#endif  // FONT_H
+#endif  // FONT_H_

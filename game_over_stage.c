@@ -18,7 +18,6 @@
 #include "keyboard.h"
 #include "physics.h"
 #include "render.h"
-#include "string.h"
 #include "text.h"
 
 #define TITLE_TEXT "GAME OVER"
