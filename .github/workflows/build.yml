@@ -1,34 +1,199 @@
-name: CI
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
 jobs:
+  # Code quality checks
   lint:
+    name: Code Linting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Install Dependencies
+      - name: Install Development Dependencies
         run: make dev_install
 
       - name: Run Linter
         run: make lint
 
-  build:
+  format-check:
+    name: Code Format Check
     runs-on: ubuntu-latest
-    needs: lint
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Development Dependencies
+        run: make dev_install
+
+      - name: Check Code Format
+        run: |
+          make format
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Code formatting issues found. Please run 'make format' locally."
+            git diff
+            exit 1
+          fi
+
+  # Build jobs for different platforms
+  build-linux:
+    name: Build on Linux
+    runs-on: ubuntu-latest
+    needs: [lint, format-check]
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Install Dependencies
-        run: make install 
+        run: make install
 
       - name: Show SDL Configuration
         run: make show_sdl_config
 
-      - name: Compile Project
+      - name: Build Project
         run: make
+
+      - name: Test Build Output
+        run: |
+          if [ -f "./typinvaders" ]; then
+            echo "Build successful - executable created"
+            ./typinvaders --help
+          else
+            echo "Build failed - executable not found"
+            exit 1
+          fi
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: typinvaders-linux
+          path: ./typinvaders
+
+  build-macos:
+    name: Build on macOS
+    runs-on: macos-latest
+    needs: [lint, format-check]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: make install
+
+      - name: Show SDL Configuration
+        run: make show_sdl_config
+
+      - name: Build Project
+        run: make
+
+      - name: Test Build Output
+        run: |
+          if [ -f "./typinvaders" ]; then
+            echo "Build successful - executable created"
+            ./typinvaders --help
+          else
+            echo "Build failed - executable not found"
+            exit 1
+          fi
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: typinvaders-macos
+          path: ./typinvaders
+
+  # Security and static analysis
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: [lint, format-check]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Security Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cppcheck
+
+      - name: Run Static Analysis
+        run: |
+          cppcheck --enable=all --error-exitcode=1 --suppress=missingIncludeSystem .
+
+  # Memory leak detection (if supported)
+  memory-check:
+    name: Memory Check
+    runs-on: ubuntu-latest
+    needs: [lint, format-check]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: make install
+
+      - name: Install Valgrind
+        run: sudo apt-get update && sudo apt-get install -y valgrind
+
+      - name: Build with Debug Symbols
+        run: make clean && make
+
+      - name: Run Memory Check
+        run: |
+          timeout 30s valgrind --leak-check=full --error-exitcode=1 ./typinvaders --help || true
+
+  # Integration test
+  integration-test:
+    name: Integration Test
+    runs-on: ubuntu-latest
+    needs: [build-linux]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: make install
+
+      - name: Download Linux Build
+        uses: actions/download-artifact@v4
+        with:
+          name: typinvaders-linux
+          path: ./
+
+      - name: Make Executable
+        run: chmod +x ./typinvaders
+
+      - name: Test Game Options
+        run: |
+          ./typinvaders --help
+          ./typinvaders --graphics-info
+          echo "Integration tests completed successfully"
+
+  # Final summary
+  summary:
+    name: Build Summary
+    runs-on: ubuntu-latest
+    needs: [build-linux, build-macos, security-scan, memory-check, integration-test]
+    if: always()
+    steps:
+      - name: Build Status Summary
+        run: |
+          echo "=== Build Pipeline Summary ==="
+          echo "Linux Build: ${{ needs.build-linux.result }}"
+          echo "macOS Build: ${{ needs.build-macos.result }}"
+          echo "Security Scan: ${{ needs.security-scan.result }}"
+          echo "Memory Check: ${{ needs.memory-check.result }}"
+          echo "Integration Test: ${{ needs.integration-test.result }}"
+          
+          if [[ "${{ needs.build-linux.result }}" == "success" && "${{ needs.build-macos.result }}" == "success" ]]; then
+            echo "✅ All builds successful!"
+          else
+            echo "❌ Some builds failed"
+            exit 1
+          fi
         
