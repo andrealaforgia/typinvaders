@@ -6,13 +6,25 @@
 
 #include "inline.h"
 
-static int get_display_count(void) { return SDL_GetNumVideoDisplays(); }
+static int get_display_count(void) {
+    int count = SDL_GetNumVideoDisplays();
+    if (count < 0) {
+        SDL_Log("SDL_GetNumVideoDisplays failed: %s", SDL_GetError());
+        return 0;
+    }
+    return count;
+}
 
 static SDL_DisplayMode *get_display_modes(int display_index,
                                           int *p_display_mode_count) {
     *p_display_mode_count = SDL_GetNumDisplayModes(display_index);
-    if (*p_display_mode_count < 1) {
+    if (*p_display_mode_count < 0) {
         SDL_Log("SDL_GetNumDisplayModes failed: %s", SDL_GetError());
+        *p_display_mode_count = 0;
+        return NULL;
+    }
+    if (*p_display_mode_count == 0) {
+        SDL_Log("No display modes available for display %d", display_index);
         return NULL;
     }
 
@@ -33,6 +45,13 @@ void print_graphics_info(void) {
     SDL_Init(SDL_INIT_EVERYTHING);
     int display_count = get_display_count();
     SDL_Log("Number of available displays: %d\n", display_count);
+
+    if (display_count == 0) {
+        SDL_Log("No displays available - running in headless environment\n");
+        SDL_Quit();
+        return;
+    }
+
     for (int display_index = 0; display_index < display_count;
          display_index++) {
         SDL_Log("Display Index: %d\n", display_index);
@@ -66,6 +85,15 @@ graphics_context_t init_graphics_context(int display,
 
     SDL_ShowCursor(SDL_DISABLE);
     SDL_DisplayMode sdl_display_mode;
+
+    // Check if display exists
+    int display_count = get_display_count();
+    if (display >= display_count) {
+        SDL_Log("Display %d does not exist (only %d displays available)\n",
+                display,
+                display_count);
+        abort();
+    }
 
     if (SDL_GetDisplayMode(display, display_mode, &sdl_display_mode) != 0) {
         SDL_Log("SDL_GetDisplayMode Error: %s\n", SDL_GetError());
