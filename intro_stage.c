@@ -160,23 +160,41 @@ typedef struct maze_t {
     sprite_t layout[31][28];
 } maze_t;
 
+// clang-format off
 const char* maze_symbols[] = {
-    "0111111111111231111111111114", "5............67............8",
-    "5.9AAB.9AAAB.67.9AAAB.9AAB.8", "5*6  7.6   7.67.6   7.6  7*8",
-    "5.CDDE.CDDDE.CE.CDDDE.CDDE.8", "5..........................8",
-    "5.9AAB.9B.9AAAAAAB.9B.9AAB.8", "5.CDDE.67.CDDFGDDE.67.CDDE.8",
-    "5......67....67....67......8", "HIIIIJ.6KAAB 67 9AAL7.MIIIIN",
-    "     5.6GDDE CE CDDF7.8     ", "     5.67          67.8     ",
-    "     5.67 OPPQQPPR 67.8     ", "11111S.CE 8      5 CE.T11111",
-    "      .   8      5   .      ", "IIIIIJ.9B 8      5 9B.MIIIII",
-    "     5.67 U111111V 67.8     ", "     5.67          67.8     ",
-    "     5.67 9AAAAAAB 67.8     ", "01111S.CE CDDFGDDE CE.T11114",
-    "5............67............8", "5.9AAB.9AAAB.67.9AAAB.9AAB.8",
-    "5.CDF7.CDDDE.CE.CDDDE.6GDE.8", "5*..67.......  .......67..*8",
-    "WAB.67.9B.9AAAAAAB.9B.67.9AX", "YDE.CE.67.CDDFGDDE.67.CE.CDZ",
-    "5......67....67....67......8", "5.9AAAALKAAB.67.9AALKAAAAB.8",
-    "5.CDDDDDDDDE.CE.CDDDDDDDDE.8", "5..........................8",
-    "HIIIIIIIIIIIIIIIIIIIIIIIIIIN"};
+    "0111111111111231111111111114",
+    "5............67............8",
+    "5.9AAB.9AAAB.67.9AAAB.9AAB.8",
+    "5*6  7.6   7.67.6   7.6  7*8",
+    "5.CDDE.CDDDE.CE.CDDDE.CDDE.8",
+    "5..........................8",
+    "5.9AAB.9B.9AAAAAAB.9B.9AAB.8",
+    "5.CDDE.67.CDDFGDDE.67.CDDE.8",
+    "5......67....67....67......8",
+    "HIIIIJ.6KAAB 67 9AAL7.MIIIIN",
+    "     5.6GDDE CE CDDF7.8     ",
+    "     5.67          67.8     ",
+    "     5.67 OPPQQPPR 67.8     ",
+    "11111S.CE 8      5 CE.T11111",
+    "      .   8      5   .      ",
+    "IIIIIJ.9B 8      5 9B.MIIIII",
+    "     5.67 U111111V 67.8     ",
+    "     5.67          67.8     ",
+    "     5.67 9AAAAAAB 67.8     ",
+    "01111S.CE CDDFGDDE CE.T11114",
+    "5............67............8",
+    "5.9AAB.9AAAB.67.9AAAB.9AAB.8",
+    "5.CDF7.CDDDE.CE.CDDDE.6GDE.8",
+    "5*..67.......  .......67..*8",
+    "WAB.67.9B.9AAAAAAB.9B.67.9AX",
+    "YDE.CE.67.CDDFGDDE.67.CE.CDZ",
+    "5......67....67....67......8",
+    "5.9AAAALKAAB.67.9AALKAAAAB.8",
+    "5.CDDDDDDDDE.CE.CDDDDDDDDE.8",
+    "5..........................8",
+    "HIIIIIIIIIIIIIIIIIIIIIIIIIIN",
+};
+// clang-format on
 
 typedef struct rendered_sprite_t {
     sprite_t sprite;
