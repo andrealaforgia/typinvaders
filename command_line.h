@@ -6,14 +6,14 @@
 #include "window_mode.h"
 
 typedef struct {
-  bool help;
-  bool graphics_info;
-  bool no_sound;
-  bool show_fps;
-  int display;
-  int display_mode;
-  window_mode_t window_mode;
-  int fps;
+    bool help;
+    bool graphics_info;
+    bool no_sound;
+    bool show_fps;
+    int display;
+    int display_mode;
+    window_mode_t window_mode;
+    int fps;
 } command_line_options_t, *command_line_options_ptr;
 
 command_line_options_t parse_command_line_options(int argc, char *argv[]);

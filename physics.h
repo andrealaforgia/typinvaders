@@ -4,8 +4,8 @@
 #include "geometry.h"
 
 typedef struct {
-  double speed;
-  vector_t direction;
+    double speed;
+    vector_t direction;
 } velocity_t, *velocity_ptr;
 
 velocity_t velocity(const double speed, const vector_t direction);

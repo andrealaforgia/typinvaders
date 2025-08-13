@@ -1,8 +1,7 @@
 BasedOnStyle: LLVM
 IndentWidth: 4
 UseTab: Never
-Cpp11BracedListStyle: true
-AllowShortBracedListsOnASingleLine: false
+Cpp11BracedListStyle: false
 BinPackArguments: false
 BinPackParameters: false
 # Ensure at least two spaces between code and comments

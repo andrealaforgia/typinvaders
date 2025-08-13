@@ -49,7 +49,7 @@ clean:
 	rm -f $(OBJ) $(TARGET)
 
 format:
-	clang-format -i -style=Google $(SRC) $(HEADERS)
+	clang-format -i $(SRC) $(HEADERS)
 
 show_sdl_config:
 	@echo "Checking SDL2 Configuration..."

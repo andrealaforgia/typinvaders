@@ -12,11 +12,11 @@
 #define SMALL_ASTEROID_SCALE 2
 
 typedef struct {
-  int type;
-  int scale;
-  point_t position;
-  velocity_t velocity;
-  color_t color;
+    int type;
+    int scale;
+    point_t position;
+    velocity_t velocity;
+    color_t color;
 } asteroid_t, *asteroid_ptr;
 
 asteroid_t create_asteroid(point_t position, int scale, color_t color);

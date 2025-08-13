@@ -4,13 +4,13 @@
 #define table_size 100
 
 typedef struct node_t {
-  char *key;
-  void *value;
-  struct node_t *next;
+    char *key;
+    void *value;
+    struct node_t *next;
 } node_t, *node_ptr;
 
 typedef struct hash_map_t {
-  node_ptr *table;
+    node_ptr *table;
 } hash_map_t, *hash_map_ptr;
 
 unsigned int hash(const char *key);

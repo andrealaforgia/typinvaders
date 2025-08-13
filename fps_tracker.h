@@ -4,8 +4,8 @@
 #include <stdlib.h>
 
 typedef struct {
-  unsigned frame_count;
-  int start_ticks;
+    unsigned frame_count;
+    int start_ticks;
 } fps_tracker_t, *fps_tracker_ptr;
 
 fps_tracker_t create_fps_tracker(void);

@@ -4,7 +4,7 @@
 #include <SDL_mixer.h>
 
 typedef struct {
-  Mix_Chunk *chunks[11];
+    Mix_Chunk *chunks[11];
 } audio_context_t, *audio_context_ptr;
 
 audio_context_t init_audio_context(void);

@@ -14,10 +14,10 @@
 #define RIGHT_TO_LEFT_VELOCITY (velocity(4, vector(-1, 0)))
 
 typedef struct {
-  point_t position;
-  velocity_t velocity;
-  int scale;
-  bool flying;
+    point_t position;
+    velocity_t velocity;
+    int scale;
+    bool flying;
 } saucer_t, *saucer_ptr;
 
 saucer_t create_saucer(const graphics_context_ptr graphics_context);
