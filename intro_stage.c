@@ -66,18 +66,18 @@ void init_intro_stage(const game_ptr _game) {
     title_text_scale = (graphics_context->screen_height * 25) / 900;
     title_text_dimensions =
         calculate_text_dimensions(TITLE_TEXT, title_text_scale);
-    title_text_position = point(
-        graphics_context->screen_center.x - title_text_dimensions.width / 2,
-        graphics_context->screen_center.y -
-            graphics_context->screen_height / 3);
+    title_text_position = point(graphics_context->screen_center.x -
+                                    title_text_dimensions.width / 2,
+                                graphics_context->screen_center.y -
+                                    graphics_context->screen_height / 3);
 
     action_text_scale = (graphics_context->screen_height * 10) / 900;
     action_text_dimensions =
         calculate_text_dimensions(ACTION_TEXT, action_text_scale);
-    action_text_position = point(
-        graphics_context->screen_center.x - action_text_dimensions.width / 2,
-        graphics_context->screen_center.y +
-            graphics_context->screen_height / 6);
+    action_text_position = point(graphics_context->screen_center.x -
+                                     action_text_dimensions.width / 2,
+                                 graphics_context->screen_center.y +
+                                     graphics_context->screen_height / 6);
 
     instructions_text_scale = (graphics_context->screen_height * 10) / 900;
     instructions_text_dimensions =
@@ -126,7 +126,7 @@ void init_intro_stage(const game_ptr _game) {
 }
 
 void load_font_from_sprite_sheet(const sprite_sheet_ptr sprite_sheet) {
-    const char* chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789-";
+    const char *chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789-";
     int x = 0;
     int y = 0;
     int i = 0;
@@ -141,16 +141,19 @@ void load_font_from_sprite_sheet(const sprite_sheet_ptr sprite_sheet) {
     }
 }
 
-void write(const graphics_context_ptr graphics_context, char* text, int x,
-           int y, int zoom) {
+void write(const graphics_context_ptr graphics_context,
+           char *text,
+           int x,
+           int y,
+           int zoom) {
     int char_x = x;
     for (int i = 0; text[i]; i++) {
         if (text[i] == ' ') {
             char_x += 4 * zoom;
             continue;
         }
-        render_sprite(graphics_context, &font[(int)(text[i])], char_x, y, 0,
-                      zoom);
+        render_sprite(
+            graphics_context, &font[(int)(text[i])], char_x, y, 0, zoom);
         char_x += 8 * zoom;
     }
 }
@@ -231,41 +234,41 @@ sprite_t get_pacman_sprite(pacman_stage_t stage, direction_t dir) {
     int base_index = 0;
 
     switch (dir) {
-        case RIGHT:
-            base_index = 1;
-            break;
-        case LEFT:
-            base_index = 3;
-            break;
-        case UP:
-            base_index = 5;
-            break;
-        case DOWN:
-            base_index = 7;
-            break;
+    case RIGHT:
+        base_index = 1;
+        break;
+    case LEFT:
+        base_index = 3;
+        break;
+    case UP:
+        base_index = 5;
+        break;
+    case DOWN:
+        base_index = 7;
+        break;
     }
 
     if (stage == OPENING || stage == CLOSING) {
-        return pacman_sprites[base_index];  // partially open
+        return pacman_sprites[base_index]; // partially open
     } else if (stage == OPEN) {
-        return pacman_sprites[base_index + 1];  // fully open
+        return pacman_sprites[base_index + 1]; // fully open
     }
 
-    return pacman_sprites[0];  // fallback
+    return pacman_sprites[0]; // fallback
 }
 
 pacman_stage_t next_stage(pacman_stage_t current_stage) {
     switch (current_stage) {
-        case CLOSED:
-            return OPENING;
-        case OPENING:
-            return OPEN;
-        case OPEN:
-            return CLOSING;
-        case CLOSING:
-            return CLOSED;
-        default:
-            return CLOSED;  // fallback in case of invalid input
+    case CLOSED:
+        return OPENING;
+    case OPENING:
+        return OPEN;
+    case OPEN:
+        return CLOSING;
+    case CLOSING:
+        return CLOSED;
+    default:
+        return CLOSED; // fallback in case of invalid input
     }
 }
 
@@ -277,7 +280,8 @@ game_stage_action_t handle_intro_stage(void) {
     asteroid_t asteroids[ASTEROIDS_COUNT];
     for (int i = 0; i < ASTEROIDS_COUNT; i++) {
         asteroids[i] = create_asteroid(random_point(graphics_context),
-                                       random_asteroid_scale(), random_color());
+                                       random_asteroid_scale(),
+                                       random_color());
     }
 
     int last_frame_ticks = get_clock_ticks_ms();
@@ -290,27 +294,48 @@ game_stage_action_t handle_intro_stage(void) {
         create_sprite_sheet(graphics_context, "./assets/sprites/sprites.png");
 
     pacman_sprites[0] =
-        create_sprite(&sprite_sheet, 456 + 32, 0, 16, 16);  // Closed mouth
+        create_sprite(&sprite_sheet, 456 + 32, 0, 16, 16); // Closed mouth
 
-    pacman_sprites[1] = create_sprite(&sprite_sheet, 456 + 16, 0, 16,
-                                      16);  // Partially open mouth (right)
-    pacman_sprites[2] = create_sprite(&sprite_sheet, 456, 0, 16,
-                                      16);  // Fully open mouth (right)
+    pacman_sprites[1] = create_sprite(&sprite_sheet,
+                                      456 + 16,
+                                      0,
+                                      16,
+                                      16); // Partially open mouth (right)
+    pacman_sprites[2] = create_sprite(&sprite_sheet,
+                                      456,
+                                      0,
+                                      16,
+                                      16); // Fully open mouth (right)
 
-    pacman_sprites[3] = create_sprite(&sprite_sheet, 456 + 16, 16, 16,
-                                      16);  // Partially open mouth (left)
-    pacman_sprites[4] = create_sprite(&sprite_sheet, 456, 16, 16,
-                                      16);  // Fully open mouth (left)
+    pacman_sprites[3] = create_sprite(&sprite_sheet,
+                                      456 + 16,
+                                      16,
+                                      16,
+                                      16); // Partially open mouth (left)
+    pacman_sprites[4] = create_sprite(&sprite_sheet,
+                                      456,
+                                      16,
+                                      16,
+                                      16); // Fully open mouth (left)
 
-    pacman_sprites[5] = create_sprite(&sprite_sheet, 456 + 16, 32, 16,
-                                      16);  // Partially open mouth (up)
+    pacman_sprites[5] = create_sprite(&sprite_sheet,
+                                      456 + 16,
+                                      32,
+                                      16,
+                                      16); // Partially open mouth (up)
     pacman_sprites[6] =
-        create_sprite(&sprite_sheet, 456, 32, 16, 16);  // Fully open mouth (up)
+        create_sprite(&sprite_sheet, 456, 32, 16, 16); // Fully open mouth (up)
 
-    pacman_sprites[7] = create_sprite(&sprite_sheet, 456 + 16, 48, 16,
-                                      16);  // Partially open mouth (down)
-    pacman_sprites[8] = create_sprite(&sprite_sheet, 456, 48, 16,
-                                      16);  // Fully open mouth (down)
+    pacman_sprites[7] = create_sprite(&sprite_sheet,
+                                      456 + 16,
+                                      48,
+                                      16,
+                                      16); // Partially open mouth (down)
+    pacman_sprites[8] = create_sprite(&sprite_sheet,
+                                      456,
+                                      48,
+                                      16,
+                                      16); // Fully open mouth (down)
 
     pacman_t pacman;
     pacman.direction = LEFT;
@@ -322,7 +347,7 @@ game_stage_action_t handle_intro_stage(void) {
     int pacman_last_ticks = last_frame_ticks;
     int pacman_stage_last_ticks = last_frame_ticks;
 
-    int maze_height = sizeof(maze_symbols) / sizeof(char*);
+    int maze_height = sizeof(maze_symbols) / sizeof(char *);
     int maze_width = strlen(maze_symbols[0]);
 
     int maze_sprite_height = maze_height * 8;
@@ -335,12 +360,13 @@ game_stage_action_t handle_intro_stage(void) {
 
     int maze_scaled_width = maze_sprite_width * zoom;
     int maze_scaled_height = maze_sprite_height * zoom;
-    
+
     rectangle_t maze_rectangle = rectangle(
         point(graphics_context->screen_width / 2 - maze_scaled_width / 2,
               graphics_context->screen_height / 2 - maze_scaled_height / 2),
-        maze_scaled_width, maze_scaled_height);
-    
+        maze_scaled_width,
+        maze_scaled_height);
+
     maze_t maze;
     int maze_x = 28 * 9;
     int maze_y = 0;
@@ -382,18 +408,18 @@ game_stage_action_t handle_intro_stage(void) {
         if (elapsed_from(pacman_last_ticks) > 500) {
             pacman_sprite = get_pacman_sprite(pacman.stage, pacman.direction);
             switch (pacman.direction) {
-                case UP:
-                    pacman.position.y -= 1;
-                    break;
-                case DOWN:
-                    pacman.position.y += 1;
-                    break;
-                case LEFT:
-                    pacman.position.x -= 1;
-                    break;
-                case RIGHT:
-                    pacman.position.x += 1;
-                    break;
+            case UP:
+                pacman.position.y -= 1;
+                break;
+            case DOWN:
+                pacman.position.y += 1;
+                break;
+            case LEFT:
+                pacman.position.x -= 1;
+                break;
+            case RIGHT:
+                pacman.position.x += 1;
+                break;
             }
             pacman_last_ticks = get_clock_ticks_ms();
         }
@@ -472,132 +498,138 @@ game_stage_action_t handle_intro_stage(void) {
             for (int y = 0; y < maze_height; y++) {
                 sprite_t sprite;
                 switch (maze_symbols[y][x]) {
-                    case ' ':
-                        continue;
-                    case '.':
-                        sprite = maze_parts[1][1];
-                        break;
-                    case '*':
-                        sprite = maze_parts[3][1];
-                        break;
-                    case '0':
-                        sprite = maze_parts[0][0];
-                        break;
-                    case '1':
-                        sprite = maze_parts[0][1];
-                        break;
-                    case '2':
-                        sprite = maze_parts[0][13];
-                        break;
-                    case '3':
-                        sprite = maze_parts[0][14];
-                        break;
-                    case '4':
-                        sprite = maze_parts[0][27];
-                        break;
-                    case '5':
-                        sprite = maze_parts[1][0];
-                        break;
-                    case '6':
-                        sprite = maze_parts[1][13];
-                        break;
-                    case '7':
-                        sprite = maze_parts[1][14];
-                        break;
-                    case '8':
-                        sprite = maze_parts[1][27];
-                        break;
-                    case '9':
-                        sprite = maze_parts[2][2];
-                        break;
-                    case 'A':
-                        sprite = maze_parts[2][3];
-                        break;
-                    case 'B':
-                        sprite = maze_parts[2][5];
-                        break;
-                    case 'C':
-                        sprite = maze_parts[4][2];
-                        break;
-                    case 'D':
-                        sprite = maze_parts[4][3];
-                        break;
-                    case 'E':
-                        sprite = maze_parts[4][5];
-                        break;
-                    case 'F':
-                        sprite = maze_parts[7][13];
-                        break;
-                    case 'G':
-                        sprite = maze_parts[7][14];
-                        break;
-                    case 'H':
-                        sprite = maze_parts[9][0];
-                        break;
-                    case 'I':
-                        sprite = maze_parts[9][1];
-                        break;
-                    case 'J':
-                        sprite = maze_parts[9][5];
-                        break;
-                    case 'K':
-                        sprite = maze_parts[9][8];
-                        break;
-                    case 'L':
-                        sprite = maze_parts[9][19];
-                        break;
-                    case 'M':
-                        sprite = maze_parts[9][22];
-                        break;
-                    case 'N':
-                        sprite = maze_parts[9][27];
-                        break;
-                    case 'O':
-                        sprite = maze_parts[12][10];
-                        break;
-                    case 'P':
-                        sprite = maze_parts[12][11];
-                        break;
-                    case 'Q':
-                        sprite = maze_parts[12][13];
-                        break;
-                    case 'R':
-                        sprite = maze_parts[12][17];
-                        break;
-                    case 'S':
-                        sprite = maze_parts[13][5];
-                        break;
-                    case 'T':
-                        sprite = maze_parts[13][22];
-                        break;
-                    case 'U':
-                        sprite = maze_parts[16][10];
-                        break;
-                    case 'V':
-                        sprite = maze_parts[16][17];
-                        break;
-                    case 'W':
-                        sprite = maze_parts[24][0];
-                        break;
-                    case 'X':
-                        sprite = maze_parts[24][27];
-                        break;
-                    case 'Y':
-                        sprite = maze_parts[25][0];
-                        break;
-                    case 'Z':
-                        sprite = maze_parts[25][27];
-                        break;
+                case ' ':
+                    continue;
+                case '.':
+                    sprite = maze_parts[1][1];
+                    break;
+                case '*':
+                    sprite = maze_parts[3][1];
+                    break;
+                case '0':
+                    sprite = maze_parts[0][0];
+                    break;
+                case '1':
+                    sprite = maze_parts[0][1];
+                    break;
+                case '2':
+                    sprite = maze_parts[0][13];
+                    break;
+                case '3':
+                    sprite = maze_parts[0][14];
+                    break;
+                case '4':
+                    sprite = maze_parts[0][27];
+                    break;
+                case '5':
+                    sprite = maze_parts[1][0];
+                    break;
+                case '6':
+                    sprite = maze_parts[1][13];
+                    break;
+                case '7':
+                    sprite = maze_parts[1][14];
+                    break;
+                case '8':
+                    sprite = maze_parts[1][27];
+                    break;
+                case '9':
+                    sprite = maze_parts[2][2];
+                    break;
+                case 'A':
+                    sprite = maze_parts[2][3];
+                    break;
+                case 'B':
+                    sprite = maze_parts[2][5];
+                    break;
+                case 'C':
+                    sprite = maze_parts[4][2];
+                    break;
+                case 'D':
+                    sprite = maze_parts[4][3];
+                    break;
+                case 'E':
+                    sprite = maze_parts[4][5];
+                    break;
+                case 'F':
+                    sprite = maze_parts[7][13];
+                    break;
+                case 'G':
+                    sprite = maze_parts[7][14];
+                    break;
+                case 'H':
+                    sprite = maze_parts[9][0];
+                    break;
+                case 'I':
+                    sprite = maze_parts[9][1];
+                    break;
+                case 'J':
+                    sprite = maze_parts[9][5];
+                    break;
+                case 'K':
+                    sprite = maze_parts[9][8];
+                    break;
+                case 'L':
+                    sprite = maze_parts[9][19];
+                    break;
+                case 'M':
+                    sprite = maze_parts[9][22];
+                    break;
+                case 'N':
+                    sprite = maze_parts[9][27];
+                    break;
+                case 'O':
+                    sprite = maze_parts[12][10];
+                    break;
+                case 'P':
+                    sprite = maze_parts[12][11];
+                    break;
+                case 'Q':
+                    sprite = maze_parts[12][13];
+                    break;
+                case 'R':
+                    sprite = maze_parts[12][17];
+                    break;
+                case 'S':
+                    sprite = maze_parts[13][5];
+                    break;
+                case 'T':
+                    sprite = maze_parts[13][22];
+                    break;
+                case 'U':
+                    sprite = maze_parts[16][10];
+                    break;
+                case 'V':
+                    sprite = maze_parts[16][17];
+                    break;
+                case 'W':
+                    sprite = maze_parts[24][0];
+                    break;
+                case 'X':
+                    sprite = maze_parts[24][27];
+                    break;
+                case 'Y':
+                    sprite = maze_parts[25][0];
+                    break;
+                case 'Z':
+                    sprite = maze_parts[25][27];
+                    break;
                 }
-                render_sprite(graphics_context, &sprite,
+                render_sprite(graphics_context,
+                              &sprite,
                               maze_rectangle.top_left.x + x * 8 * zoom,
-                              maze_rectangle.top_left.y + y * 8 * zoom, 0,
+                              maze_rectangle.top_left.y + y * 8 * zoom,
+                              0,
                               zoom);
             }
         }
 
-        render_sprite(graphics_context, &pacman_sprite, pacman.position.x,
-                      pacman.position.y, 0, zoom);
+        render_sprite(graphics_context,
+                      &pacman_sprite,
+                      pacman.position.x,
+                      pacman.position.y,
+                      0,
+                      zoom);
 
         render_frame(graphics_context);
 
@@ -605,13 +637,13 @@ game_stage_action_t handle_intro_stage(void) {
 
         while ((event = poll_event())) {
             switch (event) {
-                case NO_EVENT:
-                case KEY_PRESSED_EVENT:
-                case OTHER_EVENT:
-                    break;
-                case QUIT_EVENT: {
-                    return QUIT;
-                }
+            case NO_EVENT:
+            case KEY_PRESSED_EVENT:
+            case OTHER_EVENT:
+                break;
+            case QUIT_EVENT: {
+                return QUIT;
+            }
             }
         }
 
