@@ -203,7 +203,7 @@ ALWAYS_INLINE void render_lives(const graphics_context_ptr graphics_context,
                                 point_t position,
                                 const int lives) {
     for (int i = 0; i < lives; i++) {
-        position.x -= 20;
+        // position.x -= 20;
     }
 }
 
