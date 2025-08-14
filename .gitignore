@@ -86,4 +86,4 @@ __pycache__/
 .gitignore.local
 
 # executable
-typinvaders
+pacman
