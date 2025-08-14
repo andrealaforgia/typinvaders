@@ -42,10 +42,10 @@ game_stage_action_t handle_intro_stage(void) {
     rectangle_t maze_rectangle =
         create_maze_rectangle(graphics_context, zoom, &maze);
 
-    pacman_character_t pacman =
-        pacman_character_create(&sprite_sheet,
-                                point(graphics_context->screen_width / 2,
-                                      graphics_context->screen_height / 2));
+    pacman_character_t pacman = pacman_character_create(
+        &sprite_sheet,
+        point(maze_rectangle.top_left.x + 13 * 8 * zoom,
+              maze_rectangle.top_left.y + 23 * 8 * zoom - 4 * zoom));
 
     while (true) {
         int now = get_clock_ticks_ms();
@@ -60,7 +60,7 @@ game_stage_action_t handle_intro_stage(void) {
 
         clear_frame(graphics_context);
 
-        pacman_character_update(&pacman, dt);
+        // pacman_character_update(&pacman, dt);
         render_maze(graphics_context, &maze, maze_rectangle, zoom);
         pacman_character_render(&pacman, graphics_context, zoom);
 
