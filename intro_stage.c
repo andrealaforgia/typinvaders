@@ -12,7 +12,7 @@
 #include "graphics.h"
 #include "keyboard.h"
 #include "maze.h"
-#include "pacman.h"
+#include "pacman_character.h"
 #include "render.h"
 #include "sprite.h"
 
@@ -42,9 +42,10 @@ game_stage_action_t handle_intro_stage(void) {
     rectangle_t maze_rectangle =
         create_maze_rectangle(graphics_context, zoom, &maze);
 
-    pacman_t pacman = pacman_create(&sprite_sheet,
-                                    point(graphics_context->screen_width / 2,
-                                          graphics_context->screen_height / 2));
+    pacman_character_t pacman =
+        pacman_character_create(&sprite_sheet,
+                                point(graphics_context->screen_width / 2,
+                                      graphics_context->screen_height / 2));
 
     while (true) {
         int now = get_clock_ticks_ms();
@@ -59,9 +60,9 @@ game_stage_action_t handle_intro_stage(void) {
 
         clear_frame(graphics_context);
 
-        pacman_update(&pacman, dt);  // Use dt instead of elapsed_from()
+        pacman_character_update(&pacman, dt);
         render_maze(graphics_context, &maze, maze_rectangle, zoom);
-        pacman_render(&pacman, graphics_context, zoom);
+        pacman_character_render(&pacman, graphics_context, zoom);
 
         render_frame(graphics_context);
 
@@ -72,17 +73,17 @@ game_stage_action_t handle_intro_stage(void) {
         }
 
         if (is_up_key_pressed(&game->keyboard_state))
-            pacman_set_direction(&pacman, DIR_UP);
+            pacman_character_set_direction(&pacman, DIR_UP);
         else if (is_down_key_pressed(&game->keyboard_state))
-            pacman_set_direction(&pacman, DIR_DOWN);
+            pacman_character_set_direction(&pacman, DIR_DOWN);
         else if (is_left_key_pressed(&game->keyboard_state))
-            pacman_set_direction(&pacman, DIR_LEFT);
+            pacman_character_set_direction(&pacman, DIR_LEFT);
         else if (is_right_key_pressed(&game->keyboard_state))
-            pacman_set_direction(&pacman, DIR_RIGHT);
+            pacman_character_set_direction(&pacman, DIR_RIGHT);
 
         if (is_esc_key_pressed(&game->keyboard_state))
             return QUIT;
     }
 
-    pacman_destroy(&pacman);
+    pacman_character_destroy(&pacman);
 }
