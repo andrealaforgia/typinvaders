@@ -56,7 +56,6 @@ game_stage_action_t handle_intro_stage(void) {
             SDL_Delay(delay);
 
         last_frame_ticks = get_clock_ticks_ms();
-        dt = last_frame_ticks - now;
 
         clear_frame(graphics_context);
 
