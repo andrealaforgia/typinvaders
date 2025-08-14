@@ -4,23 +4,33 @@
 #include "graphics.h"
 #include "sprite.h"
 
-typedef struct maze_t {
-    sprite_t parts[44];
-    sprite_t layout[31][28];
+#define MAZE_SPRITE_COUNT 44
+
+extern const char *DEFAULT_MAZE_SYMBOLS[];
+
+typedef struct {
+    int width;
+    int height;
+    sprite_t **parts;
+    const char **symbols;
 } maze_t, *maze_ptr;
 
-maze_t create_maze(const sprite_sheet_ptr sprite_sheet);
+maze_t create_maze(const sprite_sheet_ptr sprite_sheet,
+                   const char **maze_symbols,
+                   int maze_height);
 
 void render_maze(const graphics_context_ptr graphics_context,
                  const maze_ptr maze,
                  const rectangle_t maze_rectangle,
                  int zoom);
 
-void get_maze_dimensions(int *width, int *height);
+void destroy_maze(maze_ptr maze);
 
-int calculate_maze_zoom(const graphics_context_ptr graphics_context);
+int calculate_maze_zoom(const graphics_context_ptr graphics_context,
+                        const maze_ptr maze);
 
 rectangle_t create_maze_rectangle(const graphics_context_ptr graphics_context,
-                                  int zoom);
+                                  int zoom,
+                                  const maze_ptr maze);
 
 #endif  // MAZE_H_

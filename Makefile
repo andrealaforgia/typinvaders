@@ -24,7 +24,7 @@ SRC = $(wildcard $(SRCDIR)/*.c)
 HEADERS = $(wildcard $(SRCDIR)/*.h)
 OBJ = $(SRC:.c=.o)
 
-TARGET = typinvaders
+TARGET = pacman
 
 .PHONY: all install dev_install clean lint format
 

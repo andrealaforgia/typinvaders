@@ -152,9 +152,10 @@ game_stage_action_t handle_intro_stage(void) {
     int pacman_last_ticks = last_frame_ticks;
     int pacman_stage_last_ticks = last_frame_ticks;
 
-    int zoom = calculate_maze_zoom(graphics_context);
-    rectangle_t maze_rectangle = create_maze_rectangle(graphics_context, zoom);
-    maze_t maze = create_maze(&sprite_sheet);
+    maze_t maze = create_maze(&sprite_sheet, DEFAULT_MAZE_SYMBOLS, 31);
+    int zoom = calculate_maze_zoom(graphics_context, &maze);
+    rectangle_t maze_rectangle =
+        create_maze_rectangle(graphics_context, zoom, &maze);
 
     sprite_t pacman_sprite = get_pacman_sprite(pacman.stage, pacman.direction);
 
