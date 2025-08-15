@@ -44,7 +44,7 @@ game_stage_action_t handle_intro_stage(void) {
 
     pacman_character_t pacman = pacman_character_create(
         &sprite_sheet,
-        point(maze_rectangle.top_left.x + 13 * 8 * zoom,
+        point(maze_rectangle.top_left.x + 13 * 8 * zoom + 1 * zoom,
               maze_rectangle.top_left.y + 23 * 8 * zoom - 4 * zoom));
 
     while (true) {
