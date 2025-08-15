@@ -64,19 +64,22 @@ maze_t create_maze(const sprite_sheet_ptr sprite_sheet,
 void render_maze(const graphics_context_ptr graphics_context,
                  const maze_ptr maze,
                  const rectangle_t maze_rectangle,
-                 int zoom) {
+                 int zoom,
+                 int show_power_pellets) {
     for (int y = 0; y < maze->height; y++) {
         for (int x = 0; x < maze->width; x++) {
             char sym = maze->symbols[y][x];
             if (sym == ' ')
                 continue;
             sprite_t sprite;
+            int do_render = 1;
             switch (sym) {
             case '.':
                 sprite = maze->parts[1][1];
                 break;
             case '*':
                 sprite = maze->parts[3][1];
+                do_render = show_power_pellets;
                 break;
             case '0':
                 sprite = maze->parts[0][0];
@@ -189,12 +192,14 @@ void render_maze(const graphics_context_ptr graphics_context,
             default:
                 continue;
             }
-            render_sprite(graphics_context,
-                          &sprite,
-                          maze_rectangle.top_left.x + x * 8 * zoom,
-                          maze_rectangle.top_left.y + y * 8 * zoom,
-                          0,
-                          zoom);
+            if (do_render) {
+                render_sprite(graphics_context,
+                              &sprite,
+                              maze_rectangle.top_left.x + x * 8 * zoom,
+                              maze_rectangle.top_left.y + y * 8 * zoom,
+                              0,
+                              zoom);
+            }
         }
     }
 }

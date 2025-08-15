@@ -24,6 +24,8 @@ void init_intro_stage(const game_ptr _game) {
     graphics_context = &game->graphics_context;
 }
 
+typedef enum { PPS_VISIBLE, PPS_INVISIBLE } power_pellet_status_t;
+
 game_stage_action_t handle_intro_stage(void) {
     int last_frame_ticks = get_clock_ticks_ms();
 
@@ -47,6 +49,9 @@ game_stage_action_t handle_intro_stage(void) {
         point(maze_rectangle.top_left.x + 13 * 8 * zoom + 1 * zoom,
               maze_rectangle.top_left.y + 23 * 8 * zoom - 4 * zoom));
 
+    int power_pellet_ticks_last_ticks = get_clock_ticks_ms();
+    power_pellet_status_t power_pellet_status = PPS_VISIBLE;
+
     while (true) {
         int now = get_clock_ticks_ms();
         int dt = now - last_frame_ticks;
@@ -57,10 +62,21 @@ game_stage_action_t handle_intro_stage(void) {
 
         last_frame_ticks = get_clock_ticks_ms();
 
+        if (now - power_pellet_ticks_last_ticks > 125) {
+            power_pellet_status = (power_pellet_status == PPS_VISIBLE)
+                                      ? PPS_INVISIBLE
+                                      : PPS_VISIBLE;
+            power_pellet_ticks_last_ticks = now;
+        }
+
         clear_frame(graphics_context);
 
         // pacman_character_update(&pacman, dt);
-        render_maze(graphics_context, &maze, maze_rectangle, zoom);
+        render_maze(graphics_context,
+                    &maze,
+                    maze_rectangle,
+                    zoom,
+                    power_pellet_status == PPS_VISIBLE);
         pacman_character_render(&pacman, graphics_context, zoom);
 
         render_frame(graphics_context);

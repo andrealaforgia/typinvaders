@@ -22,7 +22,8 @@ maze_t create_maze(const sprite_sheet_ptr sprite_sheet,
 void render_maze(const graphics_context_ptr graphics_context,
                  const maze_ptr maze,
                  const rectangle_t maze_rectangle,
-                 int zoom);
+                 int zoom,
+                 int show_power_pellets);
 
 void destroy_maze(maze_ptr maze);
 
