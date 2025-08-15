@@ -40,8 +40,8 @@ The game will run with sound enabled by default. If you want to disable sound at
 
 ## Commands
 
-`S`: enable/disable sound
-`<up>` or `K`: thrust the ship
-`<left>` or `H`: rotate the ship left
-`<right>` or `L`: rotate the ship right
-`<space>`: shoots
+`<up>` or `W`: move Pac-Man up
+`<down>` or `S`: move Pac-Man down
+`<left>` or `A`: move Pac-Man left
+`<right>` or `D`: move Pac-Man right
+`<ESC>`: quit the game
